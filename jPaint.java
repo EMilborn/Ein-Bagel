@@ -12,7 +12,7 @@ public class jPaint{
     private boolean cursorDown;
 
     private String name;
-    //Used for name when you save it as a file 
+    //Used for name when you save it as a file
 
 
     /**************
@@ -42,6 +42,18 @@ public class jPaint{
      ******/
     
     public static void main(String[] args){
+
+
+	while(true) { //MAIN LOOP
+	    int keyCode = 0;
+	    try {
+		keyCode = System.in.read(); //get input to start
+	    } catch(Exception e) {
+		continue; //no input
+	    }
+	    System.out.println("\033c"); //clear
+
+	}
     }
 }
 
