@@ -4,7 +4,7 @@ public class jPaint{
      INSTANCE VARIABLES
      *****************/
     
-    private Tile[][] easel;
+    private String[][] easel;
     //We could switch to String array and not use any other files
     
     private int cursorX, cursorY;
@@ -24,7 +24,7 @@ public class jPaint{
     }
 
     public jPaint(int height, int width,String newName){
-	easel =  new Tile[height][width];
+	easel =  new String[height][width];
 	name = newName;
     }
 
@@ -33,6 +33,8 @@ public class jPaint{
      *METHODS*
      *********/
     
+    public void input (int i){
+    }
     
     
     /******

@@ -1,1 +1,3 @@
-
+DAY 1
+    Just created the basic layout for jPaint
+    Dabbled with idea of Tile class, decided to NOT
