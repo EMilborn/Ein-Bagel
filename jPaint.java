@@ -55,15 +55,42 @@ public class jPaint{
      *METHODS*
      *********/
 
+    public String toString() {
+	String ret = "";
+	ret = (CLEAR); //now start drawing stuff, clear first
+	    if(mode == "main") {
+		for(int i = 0; i < easel.length; i++) {
+		    for(int j = 0; j < easel[0].length; j++) {
+			if(j == cursorX && i == cursorY) {
+			    ret += BLACK + CWHITE + 'O';
+			}
+			else {
+			    ret += easel[i][j];
+			}
+		    }
+		    ret += "\n";
+		}
+	    }
+	    
+	    else if(mode == "color") {
+	        ret += ("COLOR MODE\n"); //also temp
+	    }
+	    return ret;
+    }
     //Handles input to do certain things in certain modes, returns if input is valid
     public boolean input (int i){
 	char key = (char) i;
-	if(key == ' ') System.exit(0); //stops program
+	if(key == ' ') {
+	    System.out.println(RESET);
+	    System.exit(0); //stops program
+	}
 	if(mode.equals("main")) {
+	    move(key);
 	    if(key == 'c') {
 		mode = "color";
 		return true;
 	    }
+
 	}
 	else if(mode.equals("color")) {
 	    int num =  Character.getNumericValue(key); //if key is not a number, gives -1
@@ -78,6 +105,16 @@ public class jPaint{
         return false;
     }
     
+    public void move(char key) {
+	if(cursorY > 0 && (key == 'w' || key == 'W')) cursorY -= 1;
+	if(cursorY < easel.length - 1 && (key == 's' || key == 'S')) 
+	    cursorY += 1;
+
+	if(cursorX > 0 && (key == 'a' || key == 'A')) cursorX -= 1;
+	if(cursorX < easel[0].length - 1 && (key == 'd' || key =='D')) 
+	    cursorX += 1;
+	//call paint function here
+    }
     
     /******
      *MAIN*
@@ -85,7 +122,7 @@ public class jPaint{
     
     public static void main(String[] args){
 	jPaint inst = new jPaint();
-	System.out.println(CLEAR);
+	
 	while(true) { //MAIN LOOP
 	    int keyCode = 0;
 	    try {
@@ -94,17 +131,7 @@ public class jPaint{
 		continue; //no input
 	    }
 	    if(!inst.input(keyCode)) continue; //input returned false, invalid input 
-	    System.out.println(CLEAR); //now start drawing stuff, clear first
-	    if(inst.mode == "main") {
-		String tColor = CWHITE;
-		if(inst.color.equals(WHITE)) tColor = CBLACK;
-	        System.out.println(inst.color + tColor + "O"); //temporary
-	    }
-	    
-	    else if(inst.mode == "color") {
-		System.out.println("COLOR MODE"); //also temp
-	    }
-
+	    System.out.println(inst);
 	}
     }
 }
