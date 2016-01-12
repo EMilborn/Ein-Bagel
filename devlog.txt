@@ -1,3 +1,5 @@
 DAY 1
     Just created the basic layout for jPaint
     Dabbled with idea of Tile class, decided to NOT
+    Implemented a mode thing, changes modes represent menus, different stuff is printed
+    Made a basic color selection thing, no explanation/graphics yet
