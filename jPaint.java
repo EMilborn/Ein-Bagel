@@ -52,8 +52,8 @@ public class jPaint{
 			column = " ";
 		}
 	}
-	CursorX = 0;
-	CursorY = 0;
+	cursorX = 0;
+	cursorY = 0;
     }
 
 
