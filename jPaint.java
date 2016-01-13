@@ -80,8 +80,8 @@ public class jPaint{
 		    else {
 			ret += easel[i][j];
 		    }
-		    ret += "\n" + del(easel[0].length*2);
 		}
+		ret += "\n" + del(easel[0].length*2);	
 	    }
 	}
 	    
@@ -89,11 +89,9 @@ public class jPaint{
 	    String x = RESET + CWHITE + "Choose color\n\n";
 	    ret += x + del(x.length());
 	    for(int i = 0; i < 8; i++) {
-		ret += RESET + i + " " + ANSI + "4" + i + "m \n" + del(3);
+		ret += RESET + i + " " + ANSI + "4" + i + "m  \n" + del(4);
 	    }
 	}
-
-	ret += RESET;
 	return ret;
     }
     //Handles input to do certain things in certain modes, returns if input is valid
@@ -201,7 +199,7 @@ public class jPaint{
 	
 	jPaint inst = new jPaint(height,width);
 	
-	System.out.println(RESET);
+	System.out.println(CLEAR);
 
 	while(true) { //MAIN LOOP
 	    int keyCode = 0;
