@@ -63,6 +63,10 @@ public class jPaint{
      *METHODS*
      *********/
 
+    public static String del(int n) {
+	return "\033[" + n + "D";
+    }
+    
     public String toString() {
 	String ret = "";
 	ret = (CLEAR); //now start drawing stuff, clear first
@@ -76,14 +80,15 @@ public class jPaint{
 			    ret += easel[i][j];
 			}
 		    }
-		    ret += "\n\033[" + easel[0].length*2 + "D";
+		    ret += "\n" + del(easel[0].length*2);
 		}
 	    }
 	    
 	    else if(mode == "color") {
-	        ret += ("Choose color\n\n\033[13D");
+		String x = RESET + CWHITE + "Choose color\n\n";
+	        ret += x + del(x.length());
 		for(int i = 0; i < 8; i++) {
-		    ret += RESET + i + " " + ANSI + "4" + i + "m \n\033[3D";
+		    ret += RESET + i + " " + ANSI + "4" + i + "m \n" + del(3);
 		}
 	    }
 	    return ret;
@@ -136,7 +141,49 @@ public class jPaint{
      ******/
     
     public static void main(String[] args){
-	jPaint inst = new jPaint();
+	int width = 16;
+	int height = 16;
+	while(true) { // sizing loop
+	    int keyCode = 0;
+	    try {
+		keyCode = System.in.read(); //get input to start
+	    } catch(Exception e) {
+		continue; //no input
+	    }
+	    char key = (char) keyCode;
+	    if(key == 'w' || key == 'W') {
+		height -= 1;
+	    }
+	    else if (key == 's' || key == 'S') {
+		height += 1;
+	    }
+	    else if (key == 'a' || key == 'A') {
+		width -= 1;
+	    }
+	    else if (key == 'd' || key == 'D') {
+		width += 1;
+	    }
+	    else if (keyCode == 13) { //enter
+		break; //we have correct width and height
+	    }
+	    else {
+		System.out.println(keyCode);
+		continue;
+	    }
+	    //System.out.println it
+	    System.out.print(CLEAR);
+	    System.out.print(RED);
+	    System.out.print(del(1)); //delete red? idk but you need it
+	    for(int i = 0; i < height; i++) {
+		for(int j = 0; j < width; j++) {
+		    System.out.print("  "); //2 chars for correctness
+		}
+		System.out.println();
+		System.out.print(del(width*2)); //deletes all that space
+	    }
+	}
+	
+	jPaint inst = new jPaint(height,width);
 	
 	while(true) { //MAIN LOOP
 	    int keyCode = 0;
