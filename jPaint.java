@@ -47,7 +47,11 @@ public class jPaint{
 	easel =  new String[height][width];
 	mode = "main";
 	color = WHITE;
-	
+	for (String[] row : easel){
+		for(String column : row){
+			column = " ";
+		}
+	}
     }
 
 
