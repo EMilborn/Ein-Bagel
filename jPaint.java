@@ -65,7 +65,7 @@ public class jPaint{
     public String toString() {
 	String ret = "";
 	ret = (CLEAR); //now start drawing stuff, clear first
-	    if(mode == "main") {
+	if(mode == "main") {
 		for(int i = 0; i < easel.length; i++) {
 		    for(int j = 0; j < easel[0].length; j++) {
 			if(j == cursorX && i == cursorY) {
@@ -87,6 +87,7 @@ public class jPaint{
     //Handles input to do certain things in certain modes, returns if input is valid
     public boolean input (int i){
 	char key = (char) i;
+	System.out.println(key);
 	if(key == ' ') {
 	    System.out.println(RESET);
 	    System.exit(0); //stops program
