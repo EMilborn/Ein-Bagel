@@ -87,7 +87,6 @@ public class jPaint{
     //Handles input to do certain things in certain modes, returns if input is valid
     public boolean input (int i){
 	char key = (char) i;
-	System.out.println(key);
 	if(key == ' ') {
 	    System.out.println(RESET);
 	    System.exit(0); //stops program
