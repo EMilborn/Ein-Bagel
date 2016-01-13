@@ -107,15 +107,15 @@ public class jPaint{
 		return true;
 	    }
 	    
-	    if(key == 'c') {
+	    if(key == 'c' || key == 'C') {
 		mode = "color";
 		return true;
 	    }
 
-	    if(key == 'q') {
+	    if(key == 'q' || key == 'Q') {
 		cursorDown = !cursorDown;
-		System.out.println(cursorDown);
-		return true;}
+		return true;
+	    }
 	    
 	}
 	else if(mode.equals("color")) {
