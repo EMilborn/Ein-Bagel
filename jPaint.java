@@ -56,6 +56,7 @@ public class jPaint{
 	}
 	cursorX = 0;
 	cursorY = 0;	
+	cursorDown = true;
     }
 
 
@@ -71,27 +72,29 @@ public class jPaint{
 	String ret = "";
 	ret = (CLEAR); //now start drawing stuff, clear first
 	if(mode == "main") {
-		for(int i = 0; i < easel.length; i++) {
-		    for(int j = 0; j < easel[0].length; j++) {
-			if(j == cursorX && i == cursorY) {
-			    ret += BLACK + CWHITE + BOLD + "{}";
-			}
-			else {
-			    ret += easel[i][j];
-			}
+	    for(int i = 0; i < easel.length; i++) {
+		for(int j = 0; j < easel[0].length; j++) {
+		    if(j == cursorX && i == cursorY) {
+			ret += BLACK + CWHITE + BOLD + "{}";
+		    }
+		    else {
+			ret += easel[i][j];
 		    }
 		    ret += "\n" + del(easel[0].length*2);
 		}
 	    }
+	}
 	    
-	    else if(mode == "color") {
-		String x = RESET + CWHITE + "Choose color\n\n";
-	        ret += x + del(x.length());
-		for(int i = 0; i < 8; i++) {
-		    ret += RESET + i + " " + ANSI + "4" + i + "m \n" + del(3);
-		}
+	else if(mode == "color") {
+	    String x = RESET + CWHITE + "Choose color\n\n";
+	    ret += x + del(x.length());
+	    for(int i = 0; i < 8; i++) {
+		ret += RESET + i + " " + ANSI + "4" + i + "m \n" + del(3);
 	    }
-	    return ret;
+	}
+
+	ret += RESET;
+	return ret;
     }
     //Handles input to do certain things in certain modes, returns if input is valid
     public boolean input (int i){
@@ -105,11 +108,17 @@ public class jPaint{
 		move(key);
 		return true;
 	    }
+	    
 	    if(key == 'c') {
 		mode = "color";
 		return true;
 	    }
 
+	    if(key == 'q') {
+		cursorDown = !cursorDown;
+		System.out.println(cursorDown);
+		return true;}
+	    
 	}
 	else if(mode.equals("color")) {
 	    int num =  Character.getNumericValue(key); //if key is not a number, gives -1
@@ -125,14 +134,21 @@ public class jPaint{
     }
     
     public void move(char key) {
-	if(cursorY > 0 && (key == 'w' || key == 'W')) cursorY -= 1;
-	if(cursorY < easel.length - 1 && (key == 's' || key == 'S')) 
+	if (cursorDown)
+	    easel[cursorY][cursorX] = color + "  ";
+	
+	if(cursorY > 0 && key == 'w')
+	    cursorY -= 1;
+	
+	if(cursorY < easel.length - 1 && key == 's') 
 	    cursorY += 1;
 
-	if(cursorX > 0 && (key == 'a' || key == 'A')) cursorX -= 1;
-	if(cursorX < easel[0].length - 1 && (key == 'd' || key =='D')) 
+	if(cursorX > 0 && key == 'a') 
+	    cursorX -= 1;
+	
+	if(cursorX < easel[0].length - 1 && key == 'd') 
 	    cursorX += 1;
-	easel[cursorY][cursorX] = color + "  ";
+
 	//call paint function here
     }
     
@@ -185,6 +201,8 @@ public class jPaint{
 	
 	jPaint inst = new jPaint(height,width);
 	
+	System.out.println(RESET);
+
 	while(true) { //MAIN LOOP
 	    int keyCode = 0;
 	    try {
