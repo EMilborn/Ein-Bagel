@@ -56,6 +56,7 @@ public class jPaint{
 	}
 	cursorX = 0;
 	cursorY = 0;	
+	cursorDown = true;
     }
 
 
@@ -67,26 +68,27 @@ public class jPaint{
 	String ret = "";
 	ret = (CLEAR); //now start drawing stuff, clear first
 	if(mode == "main") {
-		for(int i = 0; i < easel.length; i++) {
-		    for(int j = 0; j < easel[0].length; j++) {
-			if(j == cursorX && i == cursorY) {
-			    ret += BLACK + CWHITE + BOLD + "{}";
-			}
-			else {
-			    ret += easel[i][j];
-			}
+	    for(int i = 0; i < easel.length; i++) {
+		for(int j = 0; j < easel[0].length; j++) {
+		    if(j == cursorX && i == cursorY) {
+			ret += BLACK + CWHITE + BOLD + "{}";
 		    }
-		    ret += "\n\033[" + easel[0].length*2 + "D";
+		    else {
+			ret += easel[i][j];
+		    }
 		}
+		ret += "\n\033[" + easel[0].length*2 + "D";
 	    }
-	    
-	    else if(mode == "color") {
-	        ret += ("Choose color\n\n\033[13D");
-		for(int i = 0; i < 8; i++) {
-		    ret += RESET + i + " " + ANSI + "4" + i + "m \n\033[3D";
-		}
+	}
+	
+	else if(mode == "color") {
+	    ret += ("Choose color\n\n\033[13D");
+	    for(int i = 0; i < 8; i++) {
+		ret += RESET + i + " " + ANSI + "4" + i + "m \n\033[3D";
 	    }
-	    return ret;
+	}
+	ret += RESET;
+	return ret;
     }
     //Handles input to do certain things in certain modes, returns if input is valid
     public boolean input (int i){
@@ -100,11 +102,17 @@ public class jPaint{
 		move(key);
 		return true;
 	    }
+	    
 	    if(key == 'c') {
 		mode = "color";
 		return true;
 	    }
 
+	    if(key == 'q') {
+		cursorDown = !cursorDown;
+		System.out.println(cursorDown);
+		return true;}
+	    
 	}
 	else if(mode.equals("color")) {
 	    int num =  Character.getNumericValue(key); //if key is not a number, gives -1
@@ -120,14 +128,21 @@ public class jPaint{
     }
     
     public void move(char key) {
-	if(cursorY > 0 && (key == 'w' || key == 'W')) cursorY -= 1;
-	if(cursorY < easel.length - 1 && (key == 's' || key == 'S')) 
+	if (cursorDown)
+	    easel[cursorY][cursorX] = color + "  ";
+	
+	if(cursorY > 0 && key == 'w')
+	    cursorY -= 1;
+	
+	if(cursorY < easel.length - 1 && key == 's') 
 	    cursorY += 1;
 
-	if(cursorX > 0 && (key == 'a' || key == 'A')) cursorX -= 1;
-	if(cursorX < easel[0].length - 1 && (key == 'd' || key =='D')) 
+	if(cursorX > 0 && key == 'a') 
+	    cursorX -= 1;
+	
+	if(cursorX < easel[0].length - 1 && key == 'd') 
 	    cursorX += 1;
-	easel[cursorY][cursorX] = color + "  ";
+
 	//call paint function here
     }
     
@@ -136,8 +151,52 @@ public class jPaint{
      ******/
     
     public static void main(String[] args){
-	jPaint inst = new jPaint();
+	jPaint inst;
 	
+	System.out.print("\n\nInput desired Height: ");
+	String height = "";
+	boolean go = true;
+	while(go){
+	    int keyCode = 0;
+	    try {
+		keyCode = System.in.read(); //get input to start
+	    } catch(Exception e) {
+		continue; //no input
+	    }
+	    if (keyCode == 32) go = false;//space
+	    if (keyCode == 8 && height.length() != 0)//backspace
+		height = height.substring(0, height.length() - 1);
+	    if (keyCode > 47 && keyCode < 58)//input is a number
+		height += keyCode - 48;
+	}
+	
+	System.out.print("\n\nInput desired Width: ");
+	String width = "";
+	go = true;
+	while(go){
+	    int keyCode = 0;
+	    try {
+		keyCode = System.in.read(); //get input to start
+	    } catch(Exception e) {
+		continue; //no input
+	    }
+	    if (keyCode == 32) go = false;//space
+	    if (keyCode == 8 && width.length() != 0)//backspace
+		width = width.substring(0, width.length() - 1);
+	    if (keyCode > 47 && keyCode < 58)//input is a number
+		width += keyCode - 48;
+	}
+
+	if (width.equals(""))
+	    width = "16";
+	
+	if (height.equals(""))
+	    height = "16";
+		
+	inst = new jPaint(Integer.parseInt(height), Integer.parseInt(width));	
+	
+	System.out.println(RESET);
+
 	while(true) { //MAIN LOOP
 	    int keyCode = 0;
 	    try {
