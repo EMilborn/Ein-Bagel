@@ -54,6 +54,7 @@ public class jPaint{
 	}
 	cursorX = 0;
 	cursorY = 0;
+	mode = "main";
     }
 
 
