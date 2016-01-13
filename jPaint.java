@@ -33,6 +33,8 @@ public class jPaint{
     public static final String CBLACK = ANSI+"30m";
     public static final String CWHITE = ANSI+"37m";
     
+    public static final String BOLD = ANSI+"1m";
+
     public static final String RESET = ANSI+"0m";
 
     /**************
@@ -47,14 +49,13 @@ public class jPaint{
 	easel =  new String[height][width];
 	mode = "main";
 	color = WHITE;
-	for (String[] row : easel){
-		for(String column : row){
-			column = " ";
-		}
+	for (int i = 0; i < height; i++) {
+	    for(int j = 0; j < width; j++) {
+		easel[i][j] = BLACK + "  ";
+	    }
 	}
 	cursorX = 0;
-	cursorY = 0;
-	mode = "main";
+	cursorY = 0;	
     }
 
 
@@ -69,18 +70,21 @@ public class jPaint{
 		for(int i = 0; i < easel.length; i++) {
 		    for(int j = 0; j < easel[0].length; j++) {
 			if(j == cursorX && i == cursorY) {
-			    ret += BLACK + CWHITE + 'O';
+			    ret += BLACK + CWHITE + BOLD + "{}";
 			}
 			else {
 			    ret += easel[i][j];
 			}
 		    }
-		    ret += "\n";
+		    ret += "\n\033[" + easel[0].length*2 + "D";
 		}
 	    }
 	    
 	    else if(mode == "color") {
-	        ret += ("COLOR MODE\n"); //also temp
+	        ret += ("Choose color\n\n\033[13D");
+		for(int i = 0; i < 8; i++) {
+		    ret += RESET + i + " " + ANSI + "4" + i + "m \n\033[3D";
+		}
 	    }
 	    return ret;
     }
@@ -92,7 +96,10 @@ public class jPaint{
 	    System.exit(0); //stops program
 	}
 	if(mode.equals("main")) {
-	    move(key);
+	    if("WASDwasd".indexOf(key) != -1) {
+		move(key);
+		return true;
+	    }
 	    if(key == 'c') {
 		mode = "color";
 		return true;
@@ -120,6 +127,7 @@ public class jPaint{
 	if(cursorX > 0 && (key == 'a' || key == 'A')) cursorX -= 1;
 	if(cursorX < easel[0].length - 1 && (key == 'd' || key =='D')) 
 	    cursorX += 1;
+	easel[cursorY][cursorX] = color + "  ";
 	//call paint function here
     }
     
