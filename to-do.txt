@@ -1,0 +1,22 @@
+Brush Sizes
+      Decide where to center brush
+      Make algo to find positions to change color, then do it
+
+Saving and loading paintings
+       Figure out a good format to save in, CSV?
+       Make algo to read data from file directly into the array
+       Make alternate option at beginning of program to load
+       Make saving dialog, with name of file
+       
+Fill tool
+     Recursive algo: change this color, find all neighbors around with same base color, repeat on them, global? var to keep track of checked tiles
+     Optimize if necessary
+     
+Shape tools
+      Rect tool: Make it like the screen size chooser
+      Circle tool: Might be harder, but find all tiles within a certain euclidean dist from center, use fill-like algo?
+      Poly tool: Might not even be worth it, wouldn't convey well over such a pixelated medium
+      
+Fix issue with blinking when moving too fast
+    Research way to print all at once/not display output until finished processing
+    Possibly make a delay after printing? See if it works
