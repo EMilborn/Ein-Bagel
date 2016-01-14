@@ -51,7 +51,7 @@ public class jPaint{
 	color = WHITE;
 	for (int i = 0; i < height; i++) {
 	    for(int j = 0; j < width; j++) {
-		easel[i][j] = BLACK + "  ";
+		easel[i][j] = WHITE;
 	    }
 	}
 	cursorX = 0;
@@ -78,7 +78,7 @@ public class jPaint{
 			ret += BLACK + CWHITE + BOLD + "{}";
 		    }
 		    else {
-			ret += easel[i][j];
+			ret += RESET + easel[i][j] + "  ";
 		    }
 		}
 		ret += "\n" + del(easel[0].length*2);	
@@ -96,23 +96,23 @@ public class jPaint{
     }
     //Handles input to do certain things in certain modes, returns if input is valid
     public boolean input (int i){
-	char key = (char) i;
+	char key = Character.toLowerCase((char) i);
 	if(key == ' ') {
 	    System.out.println(RESET);
 	    System.exit(0); //stops program
 	}
 	if(mode.equals("main")) {
-	    if("WASDwasd".indexOf(key) != -1) {
+	    if("wasd".indexOf(key) != -1) {
 		move(key);
 		return true;
 	    }
 	    
-	    if(key == 'c' || key == 'C') {
+	    if(key == 'c') {
 		mode = "color";
 		return true;
 	    }
 
-	    if(key == 'q' || key == 'Q') {
+	    if(key == 'q') {
 		cursorDown = !cursorDown;
 		return true;
 	    }
@@ -133,7 +133,7 @@ public class jPaint{
     
     public void move(char key) {
 	if (cursorDown)
-	    easel[cursorY][cursorX] = color + "  ";
+	    easel[cursorY][cursorX] = color;
 	
 	if(cursorY > 0 && key == 'w')
 	    cursorY -= 1;
@@ -164,17 +164,17 @@ public class jPaint{
 	    } catch(Exception e) {
 		continue; //no input
 	    }
-	    char key = (char) keyCode;
-	    if(key == 'w' || key == 'W') {
+	    char key = Character.toLowerCase((char) keyCode);
+	    if(key == 'w') {
 		height -= 1;
 	    }
-	    else if (key == 's' || key == 'S') {
+	    else if (key == 's') {
 		height += 1;
 	    }
-	    else if (key == 'a' || key == 'A') {
+	    else if (key == 'a') {
 		width -= 1;
 	    }
-	    else if (key == 'd' || key == 'D') {
+	    else if (key == 'd') {
 		width += 1;
 	    }
 	    else if (keyCode == 13) { //enter
@@ -209,7 +209,7 @@ public class jPaint{
 		continue; //no input
 	    }
 	    if(!inst.input(keyCode)) continue; //input returned false, invalid input 
-	    System.out.println(inst);
+	    System.out.printf(inst.toString());
 	}
     }
 }
