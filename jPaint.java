@@ -78,7 +78,7 @@ public class jPaint{
 			ret += BLACK + CWHITE + BOLD + "{}";
 		    }
 		    else {
-			ret += RESET + easel[i][j] + "  ";
+			ret += easel[i][j] + "  ";
 		    }
 		}
 		ret += "\n" + del(easel[0].length*2);	
@@ -209,7 +209,8 @@ public class jPaint{
 		continue; //no input
 	    }
 	    if(!inst.input(keyCode)) continue; //input returned false, invalid input 
-	    System.out.printf(inst.toString());
+	    System.out.print(inst);
+	    System.out.println(del(1)); //fixes strange issue with moving board
 	}
     }
 }
