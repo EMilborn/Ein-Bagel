@@ -97,22 +97,21 @@ public class jPaint{
     //Handles input to do certain things in certain modes, returns if input is valid
     public boolean input (int i){
 	char key = Character.toLowerCase((char) i);
-	if(key == ' ') {
-	    System.out.println(RESET);
-	    System.exit(0); //stops program
-	}
 	if(mode.equals("main")) {
 	    if("wasd".indexOf(key) != -1) {
 		move(key);
 		return true;
 	    }
-	    
-	    if(key == 'c') {
+	    if(key == ' ') {
+		System.out.println(RESET);
+		System.exit(0); //stops program
+	    }
+	    if(key == 'f') {
 		mode = "color";
 		return true;
 	    }
 
-	    if(key == 'q') {
+	    if(key == 'p') {
 		cursorDown = !cursorDown;
 		return true;
 	    }
@@ -132,22 +131,44 @@ public class jPaint{
     }
     
     public void move(char key) {
-	if (cursorDown)
+	if (cursorDown) //replace w/ paint functino later
 	    easel[cursorY][cursorX] = color;
 	
-	if(cursorY > 0 && key == 'w')
+	if(key == 'w')
 	    cursorY -= 1;
 	
-	if(cursorY < easel.length - 1 && key == 's') 
+	if(key == 's') 
 	    cursorY += 1;
 
-	if(cursorX > 0 && key == 'a') 
+	if(key == 'a') 
 	    cursorX -= 1;
 	
-	if(cursorX < easel[0].length - 1 && key == 'd') 
+	if(key == 'd') 
 	    cursorX += 1;
 
-	//call paint function here
+	if(key == 'q') {
+	    cursorY -= 1;
+	    cursorX -= 1;
+	}
+	
+	if(key == 'e') {
+	    cursorY -= 1;
+	    cursorX += 1;
+	}
+
+	if(key == 'z') {
+	    cursorX -= 1;
+	    cursorY += 1;
+	}
+	
+	if(key == 'c') {
+	    cursorY += 1;
+	    cursorX += 1;
+	}
+	if(cursorX < 0) cursorX = 0;
+	if(cursorY < 0) cursorY = 0;
+	if(cursorX > easel[0].length - 1) cursorX = easel[0].length - 1;
+	if(cursorY > easel.length - 1) cursorY = easel.length - 1;
     }
     
     /******
