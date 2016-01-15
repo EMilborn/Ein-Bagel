@@ -14,6 +14,8 @@ public class jPaint{
 
     private String color; //current color
 
+    private String name; 
+
     //ANSI escape sequences
     public static final String ANSI = "\033[";
     
@@ -92,13 +94,18 @@ public class jPaint{
 		ret += RESET + i + " " + ANSI + "4" + i + "m  \n" + del(4);
 	    }
 	}
+	else if(mode == "save") {
+	    System.out.println(RESET + "Enter a name for your file: " + name);
+	}
 	return ret;
     }
     //Handles input to do certain things in certain modes, returns if input is valid
+
+
     public boolean input (int i){
 	char key = Character.toLowerCase((char) i);
 	if(mode.equals("main")) {
-	    if("wasd".indexOf(key) != -1) {
+	    if("wasdqezc".indexOf(key) != -1) {
 		move(key);
 		return true;
 	    }
@@ -116,6 +123,11 @@ public class jPaint{
 		return true;
 	    }
 	    
+	    if(key == 'v') {
+		mode = "save";
+		return true;
+	    }
+	    
 	}
 	else if(mode.equals("color")) {
 	    int num =  Character.getNumericValue(key); //if key is not a number, gives -1
@@ -127,9 +139,23 @@ public class jPaint{
 	    mode = "main";
 	    return true;
 	}
+	else if(mode == "size") {
+	    if(i == 8 & name.length() > 0) {
+		name = name.substring(0,name.length()-1);
+		return true;
+	    }
+	    else if(i == 13) {
+		//if(name.length() > 0) save();
+		mode = "main";
+		return true;
+	    }
+	    else name += key;
+
         return false;
     }
     
+
+
     public void move(char key) {
 	if (cursorDown) //replace w/ paint functino later
 	    easel[cursorY][cursorX] = color;
