@@ -12,3 +12,9 @@ DAY 3 - 1/13/16
     Made the color menu actually show what color each number refers to
     Made a resizing loop at the beginning of the program, allowing the user to resize their drawing board to whatever size they like
     Made pen down/up (with Q)
+
+DAY 4 - 1/19/16 (Yes, days were skipped because nothing important completed)
+    Made saving and loading
+    Made pen start up
+    Made L load in the initialization stage, and V save in main mode
+

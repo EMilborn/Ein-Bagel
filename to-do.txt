@@ -2,8 +2,9 @@ Brush Sizes
       Decide where to center brush
       Make algo to find positions to change color, then do it
 
-Saving and loading paintings
+[DONE]Saving and loading paintings
        Figure out a good format to save in, CSV?
+       	      chose space separation
        Make algo to read data from file directly into the array
        Make alternate option at beginning of program to load
        Make saving dialog, with name of file
