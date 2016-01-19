@@ -76,6 +76,7 @@ public class jPaint{
     public String toString() {
 	String ret = "";
 	ret = (CLEAR); //now start drawing stuff, clear first
+	ret += "\033[0;0H"; //set cursor pos to 0,0 just in case something is weird
 	if(mode == "main") {
 	    for(int i = 0; i < easel.length; i++) {
 		for(int j = 0; j < easel[0].length; j++) {
@@ -165,11 +166,12 @@ public class jPaint{
     public String toFile() {
 	String ret = "";
 	ret += easel.length;
-	ret += ',';
+	ret += ",";
 	ret += easel[0].length + ",";
 	for(String[] row : easel) {
 	    for(String c : row) {
-		ret += c.charAt(6);
+		//turns out \033 is stored as a single character, so each c is X[4Ym, Y is ind 3
+		ret += c.charAt(3);
 	    }
 	}
 	return ret;
