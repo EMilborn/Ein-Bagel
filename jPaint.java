@@ -1,4 +1,6 @@
 import java.io.PrintWriter;
+import java.util.Scanner;
+import java.io.File;
 
 public class jPaint{
     
@@ -60,7 +62,7 @@ public class jPaint{
 	}
 	cursorX = 0;
 	cursorY = 0;	
-	cursorDown = true;
+	cursorDown = false;
 	name = "";
     }
 
@@ -166,8 +168,8 @@ public class jPaint{
     public String toFile() {
 	String ret = "";
 	ret += easel.length;
-	ret += ",";
-	ret += easel[0].length + ",";
+	ret += " ";
+	ret += easel[0].length + " ";
 	for(String[] row : easel) {
 	    for(String c : row) {
 		//turns out \033 is stored as a single character, so each c is X[4Ym, Y is ind 3
@@ -188,6 +190,36 @@ public class jPaint{
 	    System.exit(1);
 	}
     }
+
+    public void loadData(String data) { //does the actual loading behind load
+	for(int i = 0; i < easel.length; i++) {
+	    for(int j = 0; j < easel[0].length; j++) {
+		char newcolor = data.charAt(i * easel[0].length + j); //add row length to get down rows, then add which column to get to correct column
+		String old = easel[i][j];
+		easel[i][j] = old.substring(0,3) + newcolor + old.substring(4); //inserts the new color
+	    }
+	}
+    }
+    
+    public static jPaint load(String file) { //takes info from file "saves/file" and loads it into a new jPaint
+	try {
+	    Scanner input = new Scanner(new File("saves/"+file)); //makes a new scanner reading from the file
+	    //Scanner uses words. First word in file is number of rows, second is number of columns, third
+	    //is the long string representing file data
+	    int rows = Integer.parseInt(input.next());
+	    int columns = Integer.parseInt(input.next());
+	    String data = input.next();
+	    input.close(); //we are done with file now
+	    jPaint jp = new jPaint(rows,columns);
+	    jp.loadData(data);
+	    return jp;
+	}
+	catch(Exception e) {
+	    System.out.println(e);
+	    System.exit(1);
+	}
+	return null;
+    }	
 
     public void move(char key) {
 	if (cursorDown) //replace w/ paint functino later
@@ -235,50 +267,80 @@ public class jPaint{
      ******/
     
     public static void main(String[] args){
-	int width = 16;
-	int height = 16;
-	while(true) { // sizing loop
-	    int keyCode = 0;
-	    try {
-		keyCode = System.in.read(); //get input to start
-	    } catch(Exception e) {
-		continue; //no input
-	    }
-	    char key = Character.toLowerCase((char) keyCode);
-	    if(key == 'w') {
-		height -= 1;
-	    }
-	    else if (key == 's') {
-		height += 1;
-	    }
-	    else if (key == 'a') {
-		width -= 1;
-	    }
-	    else if (key == 'd') {
-		width += 1;
-	    }
-	    else if (keyCode == 13) { //enter
-		break; //we have correct width and height
-	    }
-	    else {
-		System.out.println(keyCode);
-		continue;
-	    }
-	    //System.out.println it
-	    System.out.print(CLEAR);
-	    System.out.print(RED);
-	    System.out.print(del(1)); //delete red? idk but you need it
-	    for(int i = 0; i < height; i++) {
-		for(int j = 0; j < width; j++) {
-		    System.out.print("  "); //2 chars for correctness
+	jPaint inst = new jPaint(); //empty temp because java gets mad otherwise
+	{ //loading phase block
+	    int width = 16;
+	    int height = 16;
+	    boolean loadMode = false;
+	    String name = "";
+	    while(true) { // sizing loop
+		int keyCode = 0;
+		try {
+		    keyCode = System.in.read(); //get input to start
+		} catch(Exception e) {
+		    continue; //no input
 		}
-		System.out.println();
-		System.out.print(del(width*2)); //deletes all that space
+		char key = Character.toLowerCase((char) keyCode);
+		if(!loadMode) { //kinda ugly but works
+		    if(key == 'w') {
+			height -= 1;
+		    }
+		    else if (key == 's') {
+			height += 1;
+		    }
+		    else if (key == 'a') {
+			width -= 1;
+		    }
+		    else if (key == 'd') {
+			width += 1;
+		    }
+		    else if (keyCode == 13) { //enter
+			break; //we have correct width and height
+		    }
+		    else if (key == 'l') { //loading time
+			loadMode = true;
+		    }
+		    else {
+			continue;
+		    }
+		    //System.out.println it
+		    System.out.print(CLEAR);
+		    System.out.print(RED);
+		    System.out.print(del(1)); //delete red? idk but you need it
+		    for(int i = 0; i < height; i++) {
+			for(int j = 0; j < width; j++) {
+			    System.out.print("  "); //2 chars for correctness
+			}
+			System.out.println();
+			System.out.print(del(width*2)); //deletes all that space
+		    }
+		}
+		else {
+		    int i = keyCode;
+		    //routine from save mode
+		    if(i == 127 || i == 8) { //8 and 127 are backspace and delete sometimes
+			if(name.length() == 0) continue;
+			name = name.substring(0,name.length()-1);
+		    }
+		    else if(i == 13) {
+			if(name.length() > 0) {
+			    inst = load(name);
+			    break;
+			}
+			else continue;
+		    }
+		    else {
+			name += key;
+		    }
+		    System.out.print(CLEAR + RESET + "\033[0;0H");
+		    System.out.print("Enter file name: " + name);
+		}
+		
+		
 	    }
+	    if(!loadMode) //else its already initialized
+		inst = new jPaint(height,width);
 	}
-	
-	jPaint inst = new jPaint(height,width);
-	
 	System.out.println(CLEAR);
 
 	while(true) { //MAIN LOOP
