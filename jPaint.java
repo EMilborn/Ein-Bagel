@@ -1,3 +1,5 @@
+import java.io.PrintWriter;
+
 public class jPaint{
     
     /*****************
@@ -147,7 +149,7 @@ public class jPaint{
 		return true;
 	    }
 	    else if(i == 13) {
-		//if(name.length() > 0) save();
+		if(name.length() > 0) save();
 		mode = "main";
 		return true;
 	    }
@@ -160,7 +162,30 @@ public class jPaint{
         return false;
     }
     
+    public String toFile() {
+	String ret = "";
+	ret += easel.length;
+	ret += ',';
+	ret += easel[0].length + ",";
+	for(String[] row : easel) {
+	    for(String c : row) {
+		ret += c.charAt(6);
+	    }
+	}
+	return ret;
+    }
 
+    public void save() {
+	try {
+	    PrintWriter writer = new PrintWriter("saves/" + name,"UTF-8");
+	    writer.print(toFile());
+	    writer.close();
+	}
+	catch(Exception e) {
+	    System.out.println(e);
+	    System.exit(1);
+	}
+    }
 
     public void move(char key) {
 	if (cursorDown) //replace w/ paint functino later
