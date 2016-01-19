@@ -59,6 +59,7 @@ public class jPaint{
 	cursorX = 0;
 	cursorY = 0;	
 	cursorDown = true;
+	name = "";
     }
 
 
@@ -95,7 +96,7 @@ public class jPaint{
 	    }
 	}
 	else if(mode == "save") {
-	    System.out.println(RESET + "Enter a name for your file: " + name);
+	    ret += (RESET + "Enter a name for your file: " + name);
 	}
 	return ret;
     }
@@ -139,8 +140,9 @@ public class jPaint{
 	    mode = "main";
 	    return true;
 	}
-	else if(mode == "size") {
-	    if(i == 8 & name.length() > 0) {
+	else if(mode == "save") {
+	    if(i == 127 || i == 8) { //8 and 127 are backspace and delete sometimes
+		if(name.length() == 0) return false;
 		name = name.substring(0,name.length()-1);
 		return true;
 	    }
@@ -149,7 +151,11 @@ public class jPaint{
 		mode = "main";
 		return true;
 	    }
-	    else name += key;
+	    else {
+		name += key;
+		return true;
+	    }
+	}
 
         return false;
     }
@@ -257,7 +263,7 @@ public class jPaint{
 	    }
 	    if(!inst.input(keyCode)) continue; //input returned false, invalid input 
 	    System.out.print(inst);
-	    System.out.println(del(1)); //fixes strange issue with moving board
+	    System.out.print(del(1)); //fixes strange issue with moving board
 	}
     }
 }
