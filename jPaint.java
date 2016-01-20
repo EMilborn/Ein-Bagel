@@ -119,85 +119,71 @@ public class jPaint{
     //Handles input to do certain things in certain modes, returns if input is valid
 
 
-    public boolean input (int i){
+    public void input (int i){
 	char key = Character.toLowerCase((char) i);
 	if(mode.equals("main")) {
 	    if("wasdqezc".indexOf(key) != -1) {
 		move(key);
-		return true;
 	    }
-	    if(key == ' ') {
+	    else if(key == ' ') {
 		System.out.println(RESET);
 		System.exit(0); //stops program
 	    }
-	    if(key == 'f') {
+	    else if(key == 'f') {
 		mode = "color";
-		return true;
 	    }
 	    
-	    if(key == 'b'){
+	    else if(key == 'b'){
 		mode = "brush";
-		return true;}
+	    }
 
-	    if(key == 'p') {
+	    else if(key == 'p') {
 		cursorDown = !cursorDown;
 		if(cursorDown) paint();
-		return true;
 	    }
 	    
-	    if(key == 'v') {
+	    else if(key == 'v') {
 		mode = "save";
-		return true;
 	    }
 	    
 	}
 	else if(mode.equals("color")) {
 	    int num =  Character.getNumericValue(key); //if key is not a number, gives -1
 	    if(num == -1 || num > 7) { //0-7 selection
-		return false;
+		return;
 	    }
 	    //else:
 	    color = ANSI + "4" + num + "m"; //sets the color to correct ANSI sequence
 	    mode = "main";
-	    return true;
 	}
 	
 	else if(mode == "save") {
 	    if(i == 127 || i == 8) { //8 and 127 are backspace and delete sometimes
-		if(name.length() == 0) return false;
+		if(name.length() == 0) return;
 		name = name.substring(0,name.length()-1);
-		return true;
 	    }
 	    else if(i == 13) {
 		if(name.length() > 0) save();
 		mode = "main";
-		return true;
 	    }
 	    else {
 		name += key;
-		return true;
 	    }
 	}
 	
 	if(mode == "brush"){
 	    if ("cs".indexOf(key) != -1){
 		shape = key;
-		return true;
 	    }
 	    
-	    if ("0123456789".indexOf(key) != -1){
+	    else if ("0123456789".indexOf(key) != -1){
 		radius = Character.getNumericValue(key);
-		return true;
 	    }
 	    
-	    if (i == 13){
+	    else if (i == 13){
 		mode = "main";
-		return true;
 	    }
 	}
-	
-	
-        return false;
     }
     
     public String toFile() {
@@ -399,7 +385,8 @@ public class jPaint{
 	    } catch(Exception e) {
 		continue; //no input
 	    }
-	    if(!inst.input(keyCode)) continue; //input returned false, invalid input 
+	    //if(!inst.input(keyCode)) continue; //input returned false, invalid input 
+	    inst.input(keyCode);
 	    System.out.print(inst);
 	    System.out.print(del(1)); //fixes strange issue with moving board
 	}
