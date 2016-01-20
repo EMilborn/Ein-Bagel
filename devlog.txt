@@ -17,4 +17,15 @@ DAY 4 - 1/19/16 (Yes, days were skipped because nothing important completed)
     Made saving and loading
     Made pen start up
     Made L load in the initialization stage, and V save in main mode
+    Added support for brush sizes and shapes
+    Press B to enter brush mode
+
+Day 5 - 1/20/16
+    Improved user experience by changing when paint goes down and when the screen gets reprinted
+    Added fill functionailty which paints all connected tiles of the same color
+    Changed certain key presses to move them closer to the left hand
+    Press R to enter Color Mode
+    Press X to lift/put down brush
+    Press F to fill
+    
 
