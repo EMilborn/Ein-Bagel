@@ -141,6 +141,7 @@ public class jPaint{
 
 	    if(key == 'p') {
 		cursorDown = !cursorDown;
+		if(cursorDown) paint();
 		return true;
 	    }
 	    
@@ -256,8 +257,6 @@ public class jPaint{
     }	
 
     public void move(char key) {
-	if (cursorDown)
-	    paint();
 	
 	if(key == 'w')
 	    cursorY -= 1;
@@ -294,6 +293,8 @@ public class jPaint{
 	if(cursorY < 0) cursorY = 0;
 	if(cursorX > easel[0].length - 1) cursorX = easel[0].length - 1;
 	if(cursorY > easel.length - 1) cursorY = easel.length - 1;
+	if (cursorDown)
+	    paint();
     }
     
     public void paint(){
