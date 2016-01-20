@@ -5,19 +5,33 @@ $ java jPaint
 Once you are in the program, controls:
 
 Initialization phase:
-    wasd to resize easel
-    l to load from a file in the saves directory
-    Loading screen:
+    Creating a new jPaint
+         WASD to resize easel
+	 ENTER when done
+	 
+    Loading an old jPaint (Press L)
         Type to name file
-	Enter to select file name
+	No file extension necessary
+	ENTER when done typing
 
 Main screen:
-    wasdqezc to move cursor and paint if brush is down
-    p to switch brush state (down or up)
-    f to go into the color menu
-    v to go into the save screen
-    Color menu:
-        0-7 to select a color
-    Save screen:
-        Type to name file
+    WASDQEZC to move cursor and paint if brush is down
+
+    X to lift or place the brush
+        By default the brush is up, when it is down you can paint with the current color
+
+    R to go into the color menu
+        0-7 to select a color for painting
+	Will close when done
+
+    V to go into the save screen
+      	Type to name file
 	Enter to select file name
+
+    F to fill
+      	Turns all connected tiles of the same color (as the one under the cursor) to the brush color
+
+    B to change the size and shape of your brush
+        0-9 to change the radius of the brush
+	C to use a circle brush
+	S to use a square brush  	
