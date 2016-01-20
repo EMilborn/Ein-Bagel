@@ -58,7 +58,7 @@ public class jPaint{
     public jPaint(int height, int width){
 	easel =  new String[height][width];
 	mode = "main";
-	color = WHITE;
+	color = BLACK;
 	for (int i = 0; i < height; i++) {
 	    for(int j = 0; j < width; j++) {
 		easel[i][j] = WHITE;
