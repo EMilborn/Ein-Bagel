@@ -129,7 +129,7 @@ public class jPaint{
 		System.out.println(RESET);
 		System.exit(0); //stops program
 	    }
-	    else if(key == 'f') {
+	    else if(key == 'r') {
 		mode = "color";
 	    }
 	    
@@ -137,7 +137,7 @@ public class jPaint{
 		mode = "brush";
 	    }
 
-	    else if(key == 'p') {
+	    else if(key == 'x') {
 		cursorDown = !cursorDown;
 		if(cursorDown) paint();
 	    }
@@ -146,6 +146,9 @@ public class jPaint{
 		mode = "save";
 	    }
 	    
+	    else if(key == 'f'){
+		fill(cursorX, cursorY, color);
+	    }
 	}
 	else if(mode.equals("color")) {
 	    int num =  Character.getNumericValue(key); //if key is not a number, gives -1
@@ -211,6 +214,7 @@ public class jPaint{
 	    System.exit(1);
 	}
     }
+    
 
     public void loadData(String data) { //does the actual loading behind load
 	for(int i = 0; i < easel.length; i++) {
@@ -296,7 +300,19 @@ public class jPaint{
 	    }
 	}
     }
-    
+
+    public void fill(int x, int y, String newColor){//fill starting at this location and using newColor
+	String oldColor = easel[y][x];//used later to check if neighbors are the old color
+	easel[y][x] = newColor;
+	for(int i = y - 1; i <= y + 1; i++){
+	    for (int j = x - 1; j <= x+1; j++){
+		if (j >= 0 && i >= 0 && j < easel[0].length && i < easel.length && easel[i][j].equals(oldColor)){
+		    fill (j , i, newColor);
+		}
+	    }
+	}
+    }
+
     /******
      *MAIN*
      ******/
