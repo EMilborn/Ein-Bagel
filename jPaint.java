@@ -308,6 +308,19 @@ public class jPaint{
 	    int height = 16;
 	    boolean loadMode = false;
 	    String name = "";
+
+	    //System.out.println once before while loop
+	    System.out.print(CLEAR);
+	    System.out.print(RED);
+	    System.out.print(del(1)); //delete red? idk but you need it
+	    for(int i = 0; i < height; i++) {
+		for(int j = 0; j < width; j++) {
+		    System.out.print("  "); //2 chars for correctness
+		}
+		System.out.println();
+		System.out.print(del(width*2)); //deletes all that space
+	    }
+
 	    while(true) { // sizing loop
 		int keyCode = 0;
 		try {
@@ -350,7 +363,9 @@ public class jPaint{
 			System.out.print(del(width*2)); //deletes all that space
 		    }
 		}
-		else {
+		if(loadMode) { //instead of else, another if so that pressing L will update screen
+		    System.out.print(CLEAR + RESET + "\033[0;0H");
+		    System.out.print("Enter file name: " + name);
 		    int i = keyCode;
 		    //routine from save mode
 		    if(i == 127 || i == 8) { //8 and 127 are backspace and delete sometimes
@@ -367,8 +382,7 @@ public class jPaint{
 		    else {
 			name += key;
 		    }
-		    System.out.print(CLEAR + RESET + "\033[0;0H");
-		    System.out.print("Enter file name: " + name);
+
 		}
 		
 		
@@ -378,6 +392,10 @@ public class jPaint{
 	}
 	System.out.println(CLEAR);
 
+	//System.out.println once before loop
+	System.out.print(inst);
+	System.out.print(del(1)); //fixes strange issue with moving board
+
 	while(true) { //MAIN LOOP
 	    int keyCode = 0;
 	    try {
@@ -385,7 +403,7 @@ public class jPaint{
 	    } catch(Exception e) {
 		continue; //no input
 	    }
-	    //if(!inst.input(keyCode)) continue; //input returned false, invalid input 
+
 	    inst.input(keyCode);
 	    System.out.print(inst);
 	    System.out.print(del(1)); //fixes strange issue with moving board
