@@ -185,7 +185,7 @@ public class jPaint{
 	    }
 	    
 	    if ("0123456789".indexOf(key) != -1){
-		radius = key;
+		radius = Character.getNumericValue(key);
 		return true;
 	    }
 	    
@@ -256,8 +256,8 @@ public class jPaint{
     }	
 
     public void move(char key) {
-	if (cursorDown) //replace w/ paint functino later
-	    easel[cursorY][cursorX] = color;
+	if (cursorDown)
+	    paint();
 	
 	if(key == 'w')
 	    cursorY -= 1;
@@ -294,6 +294,20 @@ public class jPaint{
 	if(cursorY < 0) cursorY = 0;
 	if(cursorX > easel[0].length - 1) cursorX = easel[0].length - 1;
 	if(cursorY > easel.length - 1) cursorY = easel.length - 1;
+    }
+    
+    public void paint(){
+	int dist = 0;//twice the distance(used for more precise int)
+	for (int x = cursorX - radius; x <= cursorX + radius; x++){
+	    for (int y = cursorY - radius; y <= cursorY + radius; y++){
+		dist = (int)(2 * Math.sqrt(((cursorX - x)*(cursorX - x)) + ((cursorY - y)*(cursorY - y))));
+		if (shape == 's' || dist <= 2 * radius){
+		    if (x >= 0 && y >=0 && x < easel[0].length && y < easel.length){
+		    easel[y][x] = color ;
+		    }
+		}
+	    }
+	}
     }
     
     /******
