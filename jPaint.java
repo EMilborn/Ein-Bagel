@@ -304,6 +304,8 @@ public class jPaint{
     public void fill(int x, int y, String newColor){//fill starting at this location and using newColor
 	String oldColor = easel[y][x];//used later to check if neighbors are the old color
 	easel[y][x] = newColor;
+	if (oldColor.equals(newColor))
+	    return;
 	for(int i = y - 1; i <= y + 1; i++){
 	    for (int j = x + Math.abs(i-y) - 1; j <= x - Math.abs(i-y) + 1; j++){ //abs(i-y) thing makes sure that it only goes to orthogonal neighbors
 		if (j >= 0 && i >= 0 && j < easel[0].length && i < easel.length && easel[i][j].equals(oldColor)){ 
@@ -363,6 +365,9 @@ public class jPaint{
 		    }
 		    else if (key == 'l') { //loading time
 			loadMode = true;
+			System.out.print(CLEAR + RESET + "\033[0;0H");
+			System.out.print("Enter file name: " + name);
+			key = (char)0;//clears the 'l' so the starting filename isnt blank
 		    }
 		    else {
 			continue;
@@ -380,8 +385,7 @@ public class jPaint{
 		    }
 		}
 		if(loadMode) { //instead of else, another if so that pressing L will update screen
-		    System.out.print(CLEAR + RESET + "\033[0;0H");
-		    System.out.print("Enter file name: " + name);
+		    
 		    int i = keyCode;
 		    //routine from save mode
 		    if(i == 127 || i == 8) { //8 and 127 are backspace and delete sometimes
@@ -398,10 +402,9 @@ public class jPaint{
 		    else {
 			name += key;
 		    }
-
+		    System.out.print(CLEAR + RESET + "\033[0;0H");
+		    System.out.print("Enter file name: " + name);
 		}
-		
-		
 	    }
 	    if(!loadMode) //else its already initialized
 		inst = new jPaint(height,width);
