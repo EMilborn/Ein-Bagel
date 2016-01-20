@@ -20,6 +20,10 @@ public class jPaint{
 
     private String name; 
 
+    private char shape;
+
+    private int radius;
+
     //ANSI escape sequences
     public static final String ANSI = "\033[";
     
@@ -64,6 +68,8 @@ public class jPaint{
 	cursorY = 0;	
 	cursorDown = false;
 	name = "";
+	shape = 's';
+	radius = 0;
     }
 
 
@@ -103,6 +109,11 @@ public class jPaint{
 	else if(mode == "save") {
 	    ret += (RESET + "Enter a name for your file: " + name);
 	}
+	else if (mode == "brush"){
+	    ret += "c\t-\tset shape to circle\n" + del(35);
+	    ret += "s\t-\tset shape to square\n" + del (35);
+	    ret += "digit\t-\tset size to that digit";
+	}
 	return ret;
     }
     //Handles input to do certain things in certain modes, returns if input is valid
@@ -123,6 +134,10 @@ public class jPaint{
 		mode = "color";
 		return true;
 	    }
+	    
+	    if(key == 'b'){
+		mode = "brush";
+		return true;}
 
 	    if(key == 'p') {
 		cursorDown = !cursorDown;
@@ -145,6 +160,7 @@ public class jPaint{
 	    mode = "main";
 	    return true;
 	}
+	
 	else if(mode == "save") {
 	    if(i == 127 || i == 8) { //8 and 127 are backspace and delete sometimes
 		if(name.length() == 0) return false;
@@ -161,7 +177,25 @@ public class jPaint{
 		return true;
 	    }
 	}
-
+	
+	if(mode == "brush"){
+	    if ("cs".indexOf(key) != -1){
+		shape = key;
+		return true;
+	    }
+	    
+	    if ("0123456789".indexOf(key) != -1){
+		radius = key;
+		return true;
+	    }
+	    
+	    if (i == 13){
+		mode = "main";
+		return true;
+	    }
+	}
+	
+	
         return false;
     }
     
