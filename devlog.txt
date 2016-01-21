@@ -40,7 +40,8 @@ Day 7 - 1/20/16
     Changed certain key presses to move them closer to the left hand
     Press R to enter Color Mode
     Press X to lift/put down brush
-    Press F to fill
-    Made fill not go through diagonal spaces
+    Made two different fill types, orthogonal only fills ortogonally, while diagonal fills in all drirections
+    Press F to fill orthoganally
+    Press G to fill diagonally
     
 

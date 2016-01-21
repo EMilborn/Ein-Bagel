@@ -30,8 +30,16 @@ Main screen:
 
     F to fill
       	Turns all connected tiles of the same color (as the one under the cursor) to the brush color
+	Will only fill those that are orthagonally adjacent (ie not diagonally)
+
+    G to grow
+        Similiar to fill except that it fills diagonally and orthagonally	
 
     B to change the size and shape of your brush
         0-9 to change the radius of the brush
 	C to use a circle brush
-	S to use a square brush  	
+	S to use a square brush  
+    
+    SPACE to exit the program
+        you will probably want to exit raw mode when done using this program
+	to do this type stty -raw or stty cooked	
