@@ -35,6 +35,8 @@ Main screen:
     G to grow
         Similiar to fill except that it fills diagonally and orthagonally	
 
+    T to take the color of the paint underneath the cursor
+    
     B to change the size and shape of your brush
         0-9 to change the radius of the brush
 	C to use a circle brush

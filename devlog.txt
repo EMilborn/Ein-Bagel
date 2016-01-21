@@ -43,5 +43,8 @@ Day 7 - 1/20/16
     Made two different fill types, orthogonal only fills ortogonally, while diagonal fills in all drirections
     Press F to fill orthoganally
     Press G to fill diagonally
-    
+    Improved cursor display
+    Improved brush selection UI
+    Added dropper tool
+    Press T to use the dropper on the current cursor location
 
