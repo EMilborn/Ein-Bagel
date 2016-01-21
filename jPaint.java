@@ -173,6 +173,10 @@ public class jPaint{
 	    else if(key == 'g'){
 		fill2(cursorX, cursorY, color);
 	    }
+
+	    else if(key == 't'){
+		color = easel[cursorY][cursorX];
+		    }
 	}
 	else if(mode.equals("color")) {
 	    int num =  Character.getNumericValue(key); //if key is not a number, gives -1
