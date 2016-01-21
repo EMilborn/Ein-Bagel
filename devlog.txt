@@ -13,14 +13,28 @@ DAY 3 - 1/13/16
     Made a resizing loop at the beginning of the program, allowing the user to resize their drawing board to whatever size they like
     Made pen down/up (with Q)
 
-DAY 4 - 1/19/16 (Yes, days were skipped because nothing important completed)
+DAY 4 - 1/14/15
+    Added to-do.txt
+    Fixed moving board issues
+    Other bug fixes
+
+DAY 5 - 1/15/16
+    Started weak framework for save mode
+    Added diagonal movement
+    Changed keybinds
+    Press F to enter color mode
+    Press P to lift/place brush
+    Press QECZ for diagonal movement
+
+DAY 6 - 1/19/16 
     Made saving and loading
     Made pen start up
     Made L load in the initialization stage, and V save in main mode
     Added support for brush sizes and shapes
+    Saves are located in folder saves
     Press B to enter brush mode
 
-Day 5 - 1/20/16
+Day 7 - 1/20/16
     Improved user experience by changing when paint goes down and when the screen gets reprinted
     Added fill functionailty which paints all connected tiles of the same color
     Changed certain key presses to move them closer to the left hand
