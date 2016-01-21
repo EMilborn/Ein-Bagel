@@ -333,7 +333,7 @@ public class jPaint{
 	for(int i = y - 1; i <= y + 1; i++){
 	    for (int j = x + Math.abs(i-y) - 1; j <= x - Math.abs(i-y) + 1; j++){ //abs(i-y) thing makes sure that it only goes to orthogonal neighbors
 		if (j >= 0 && i >= 0 && j < easel[0].length && i < easel.length && easel[i][j].equals(oldColor)){ 
-		    fill (j , i, newColor);
+		    fill1 (j , i, newColor);
 		}
 	    }
 	}
@@ -345,9 +345,9 @@ public class jPaint{
 	if (oldColor.equals(newColor))
 	    return;
 	for(int i = y - 1; i <= y + 1; i++){
-	    for (int j = x - 1; j <= x 1; j++){
+	    for (int j = x - 1; j <= x + 1; j++){
 		if (j >= 0 && i >= 0 && j < easel[0].length && i < easel.length && easel[i][j].equals(oldColor)){ 
-		    fill (j , i, newColor);
+		    fill2 (j , i, newColor);
 		}
 	    }
 	}
