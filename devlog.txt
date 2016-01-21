@@ -27,5 +27,6 @@ Day 5 - 1/20/16
     Press R to enter Color Mode
     Press X to lift/put down brush
     Press F to fill
+    Made fill not go through diagonal spaces
     
 

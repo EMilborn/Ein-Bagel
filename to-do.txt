@@ -13,7 +13,7 @@
      Recursive algo: change this color, find all neighbors around with same base color, repeat on them, global? var to keep track of checked tiles
      Optimize if necessary
      
-[DONE]Shape tools
+Shape tools
       Rect tool: Make it like the screen size chooser
       Circle tool: Might be harder, but find all tiles within a certain euclidean dist from center, use fill-like algo?
       Poly tool: Might not even be worth it, wouldn't convey well over such a pixelated medium

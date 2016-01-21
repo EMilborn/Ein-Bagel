@@ -86,13 +86,33 @@ public class jPaint{
 	ret = (CLEAR); //now start drawing stuff, clear first
 	ret += "\033[0;0H"; //set cursor pos to 0,0 just in case something is weird
 	if(mode == "main") {
+	    String[][] printEasel = new String[easel.length][easel[0].length];
 	    for(int i = 0; i < easel.length; i++) {
 		for(int j = 0; j < easel[0].length; j++) {
+		    printEasel[i][j] = easel[i][j];
+		}
+	    }
+
+	    //copied from paint()
+	    int dist = 0;//twice the distance(used for more precise int)
+	    for (int x = cursorX - radius; x <= cursorX + radius; x++){
+		for (int y = cursorY - radius; y <= cursorY + radius; y++){
+		    dist = (int)(2 * Math.sqrt(((cursorX - x)*(cursorX - x)) + ((cursorY - y)*(cursorY - y))));
+		    if (shape == 's' || dist <= 2 * radius){
+			if (x >= 0 && y >=0 && x < printEasel[0].length && y < printEasel.length){
+			    printEasel[y][x] = color;
+			}
+		    }
+		}
+	    }
+	   
+	    for(int i = 0; i < printEasel.length; i++) {
+		for(int j = 0; j < printEasel[0].length; j++) {
 		    if(j == cursorX && i == cursorY) {
-			ret += BLACK + CWHITE + BOLD + "{}";
+			ret += BLACK + CWHITE + BOLD + (cursorDown ? "><" : "||");
 		    }
 		    else {
-			ret += easel[i][j] + "  ";
+			ret += printEasel[i][j] + "  ";
 		    }
 		}
 		ret += "\n" + del(easel[0].length*2);	
