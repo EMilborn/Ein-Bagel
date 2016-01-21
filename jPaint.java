@@ -132,7 +132,14 @@ public class jPaint{
 	else if (mode == "brush"){
 	    ret += "c\t-\tset shape to circle\n" + del(35);
 	    ret += "s\t-\tset shape to square\n" + del (35);
-	    ret += "digit\t-\tset size to that digit";
+	    ret += "digit\t-\tset size to that digit\n\n" + del(38);
+	    ret += "current radius: " + radius + "\n" + del (27);
+	    ret += "current brush shape: ";
+	    if (shape == 's')
+		ret += "square";
+	    else 
+		ret+= "circle";
+	    ret += "\n";
 	}
 	return ret;
     }
