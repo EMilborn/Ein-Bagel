@@ -421,6 +421,10 @@ public class jPaint{
 		    else {
 			continue;
 		    }
+		    if(height > 32) height = 32;
+		    if(width > 32) width = 32;
+		    if(height < 1) height = 1;
+		    if(width < 1) width = 1;
 		    //System.out.println it
 		    System.out.print(CLEAR);
 		    System.out.print(RED);
