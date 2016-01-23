@@ -180,6 +180,10 @@ public class jPaint{
 	    else if(key == 'g'){
 		fill2(cursorX, cursorY, color);
 	    }
+	    
+	    else if(key == 'h'){
+		replace(easel[cursorY][cursorX], color);
+	    }
 
 	    else if(key == 't'){
 		color = easel[cursorY][cursorX];
@@ -360,6 +364,19 @@ public class jPaint{
 		if (j >= 0 && i >= 0 && j < easel[0].length && i < easel.length && easel[i][j].equals(oldColor)){ 
 		    fill2 (j , i, newColor);
 		}
+	    }
+	}
+    }
+
+    public void replace(String oldC, String newC){
+
+	if (oldC.equals(newC))
+	    return;
+	
+	for (int row = 0; row < easel.length; row++){
+	    for (int elmt = 0; elmt < easel[row].length; elmt++){
+		if (easel[row][elmt].equals(oldC))
+		    easel[row][elmt] = newC;
 	    }
 	}
     }
