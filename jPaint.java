@@ -1,3 +1,4 @@
+
 import java.io.PrintWriter;
 import java.util.Scanner;
 import java.io.File;
@@ -8,24 +9,24 @@ public class jPaint{
      INSTANCE VARIABLES
      *****************/
     
-    private String[][] easel;
+    private String[][] easel; //paint easel to be printed
     
-    private int cursorX, cursorY;
+    private int cursorX, cursorY; //location of cursor
 
-    private boolean cursorDown;
+    private boolean cursorDown; //user can lift or place brush
 
-    private String mode;
+    private String mode; //modes: save, main, color, brush
 
-    private String color; //current color
+    private String color; //current color of brush
 
-    private String name; 
+    private String name; //filename to save with
 
-    private char shape;
+    private char shape; //shape of Brush, 'c' fir circle, 's' for square
 
-    private int radius;
+    private int radius; //radius of Brush
 
     //ANSI escape sequences
-    public static final String ANSI = "\033[";
+    public static final String ANSI = "\033[";//ANSI escape code
     
     public static final String CLEAR = "\033c"; //special for reasons 
 
@@ -39,34 +40,36 @@ public class jPaint{
     public static final String CYAN = ANSI+"46m";
     public static final String WHITE = ANSI+"47m";
 
-    //FOREGROUND COLORS
+    //TEXT COLORS AND SETTINGS
     public static final String CBLACK = ANSI+"30m";
     public static final String CWHITE = ANSI+"37m";
     
     public static final String BOLD = ANSI+"1m";
 
-    public static final String RESET = ANSI+"0m";
+    public static final String RESET = ANSI+"0m";//resets settings
 
     /**************
      *CONSTRUCTORS*
      **************/
     
+    // default constructor
     public jPaint(){
 	this(16, 16);
     }
 
+    // creates new jPaint with height and width
     public jPaint(int height, int width){
-	easel =  new String[height][width];
-	mode = "main";
-	color = BLACK;
+	easel =  new String[height][width];//easel created
+	mode = "main";//mode set
+	color = BLACK;//default paint color set
 	for (int i = 0; i < height; i++) {
 	    for(int j = 0; j < width; j++) {
 		easel[i][j] = WHITE;
 	    }
-	}
-	cursorX = 0;
-	cursorY = 0;	
-	cursorDown = false;
+	}//makes easel white
+	cursorX = height / 2;
+	cursorY = width / 2; //places cursor in center of screen
+	cursorDown = false; //cursor up by default to prevent accidental painting 
 	name = "";
 	shape = 's';
 	radius = 0;
@@ -77,17 +80,28 @@ public class jPaint{
      *METHODS*
      *********/
 
+
+    /***********************************
+     * public static String del(int n) *
+     * deletes n amount of characters  *
+     ***********************************/
+
     public static String del(int n) {
-	return "\033[" + n + "D";
+	return ANSI + n + "D";
     }
     
+
+    /********************************
+     * public static toString()     *
+     * over-written toString method *
+     ********************************/
     public String toString() {
 	String ret = "";
-	ret = (CLEAR); //now start drawing stuff, clear first
-	ret += "\033[0;0H"; //set cursor pos to 0,0 just in case something is weird
-	if(mode == "main") {
+	ret = (CLEAR); //clear first
+	ret += "\033[0;0H"; //set terminal cursor (not jPaint cursor) pos to 0,0 just in case something is weird
+	if(mode == "main") {//different modes need different implementations of toString
 	    String[][] printEasel = new String[easel.length][easel[0].length];
-	    for(int i = 0; i < easel.length; i++) {
+	    for(int i = 0; i < easel.length; i++) {//fills print easel
 		for(int j = 0; j < easel[0].length; j++) {
 		    printEasel[i][j] = easel[i][j];
 		}
@@ -95,7 +109,7 @@ public class jPaint{
 
 	    //copied from paint()
 	    int dist = 0;//twice the distance(used for more precise int)
-	    for (int x = cursorX - radius; x <= cursorX + radius; x++){
+	    for (int x = cursorX - radius; x <= cursorX + radius; x++){//Displays brush
 		for (int y = cursorY - radius; y <= cursorY + radius; y++){
 		    dist = (int)(2 * Math.sqrt(((cursorX - x)*(cursorX - x)) + ((cursorY - y)*(cursorY - y))));
 		    if (shape == 's' || dist <= 2 * radius){
@@ -106,10 +120,10 @@ public class jPaint{
 		}
 	    }
 	   
-	    for(int i = 0; i < printEasel.length; i++) {
+	    for(int i = 0; i < printEasel.length; i++) {//adds printEasel to ret
 		for(int j = 0; j < printEasel[0].length; j++) {
 		    if(j == cursorX && i == cursorY) {
-			ret += BLACK + CWHITE + BOLD + (cursorDown ? "><" : "||");
+			ret += BLACK + CWHITE + BOLD + (cursorDown ? "><" : "||");//cursor center
 		    }
 		    else {
 			ret += printEasel[i][j] + "  ";
@@ -145,53 +159,61 @@ public class jPaint{
     }
     //Handles input to do certain things in certain modes, returns if input is valid
 
-
+    /*******************************************
+     * public void input(int i)                *
+     * does action associated with pressed key *
+     * easily modifyable                       *
+     *******************************************/
     public void input (int i){
 	char key = Character.toLowerCase((char) i);
 	if(mode.equals("main")) {
-	    if("wasdqezc".indexOf(key) != -1) {
+	    if("wasdqezc".indexOf(key) != -1) {//brush-movement keys
 		move(key);
 	    }
-	    else if(key == ' ') {
+	    else if(key == ' ') {// button to exit program ( ctrl-c wouldnt reset colors)
 		System.out.println(RESET);
 		System.exit(0); //stops program
 	    }
-	    else if(key == 'r') {
+
+	    //MODE SWITCHES
+	    else if(key == 'r') {// enter color mode
 		mode = "color";
 	    }
 	    
-	    else if(key == 'b'){
+	    else if(key == 'b'){// enter brush mode
 		mode = "brush";
 	    }
 
-	    else if(key == 'x') {
-		cursorDown = !cursorDown;
-		if(cursorDown) paint();
-	    }
-	    
-	    else if(key == 'v') {
+	    else if(key == 'v') {// enter save mode
 		mode = "save";
 	    }
-	    
+	  	    
+	    //FILL AND REPLACES
 	    else if(key == 'f'){
-		fill1(cursorX, cursorY, color);
+		fill1(cursorX, cursorY, color); // fill1 = orthagonal only
 	    }
 	    
 	    else if(key == 'g'){
-		fill2(cursorX, cursorY, color);
+		fill2(cursorX, cursorY, color); // Fill2 = orthagonal + diagonal
 	    }
 	    
 	    else if(key == 'h'){
-		replace(easel[cursorY][cursorX], color);
+		replace(easel[cursorY][cursorX], color); // like fill but replaces all of that color
 	    }
 
-	    else if(key == 't'){
+	    //OTHER TOOLS
+	    else if(key == 'x') { //lift/place brush
+		cursorDown = !cursorDown;
+		if(cursorDown) paint();
+	    }
+
+	    else if(key == 't'){ //dropper tool
 		color = easel[cursorY][cursorX];
-		    }
+	    }
 	}
 	else if(mode.equals("color")) {
 	    int num =  Character.getNumericValue(key); //if key is not a number, gives -1
-	    if(num == -1 || num > 7) { //0-7 selection
+	    if(num == -1 || num > 7) { //0-7 selection only
 		return;
 	    }
 	    //else:
@@ -201,47 +223,58 @@ public class jPaint{
 	
 	else if(mode == "save") {
 	    if(i == 127 || i == 8) { //8 and 127 are backspace and delete sometimes
-		if(name.length() == 0) return;
-		name = name.substring(0,name.length()-1);
+		if(name.length() == 0) 
+		    return;//cant delete if its already blank
+		name = name.substring(0,name.length()-1);//shorten String name
 	    }
-	    else if(i == 13) {
-		if(name.length() > 0) save();
+	    
+	    else if(i == 13) {//Enter/return
+		if(name.length() > 0) save();//wont save if string is blank
 		mode = "main";
 	    }
-	    else {
+	    else {//any other character
 		name += key;
 	    }
 	}
 	
-	if(mode == "brush"){
-	    if ("cs".indexOf(key) != -1){
+	else if(mode == "brush"){
+	    if ("cs".indexOf(key) != -1){//if key is c or s
 		shape = key;
 	    }
 	    
-	    else if ("0123456789".indexOf(key) != -1){
+	    else if ("0123456789".indexOf(key) != -1){//numbers change radius
 		radius = Character.getNumericValue(key);
 	    }
 	    
-	    else if (i == 13){
+	    else if (i == 13){//Enter
 		mode = "main";
 	    }
 	}
     }
     
+    /**********************************************
+     * public String toFile()                     *
+     * returns simplified string version of easel *
+     * used for saving                            *
+     **********************************************/
     public String toFile() {
 	String ret = "";
-	ret += easel.length;
+	ret += easel.length;//Dimensions of the easel are the first part of the text file
 	ret += " ";
 	ret += easel[0].length + " ";
 	for(String[] row : easel) {
 	    for(String c : row) {
 		//turns out \033 is stored as a single character, so each c is X[4Ym, Y is ind 3
-		ret += c.charAt(3);
+		ret += c.charAt(3);//adds just the number which distinguishes this color from the rest
 	    }
 	}
 	return ret;
     }
-
+							
+    /**************************************
+     * public void save()                 *
+     * saves as text file in saves folder *
+     **************************************/
     public void save() {
 	try {
 	    PrintWriter writer = new PrintWriter("saves/" + name,"UTF-8");
@@ -253,9 +286,13 @@ public class jPaint{
 	    System.exit(1);
 	}
     }
-    
 
-    public void loadData(String data) { //does the actual loading behind load
+    /***********************************************
+     * public void loadData(String data)           *
+     * takes version of easel that is in text file *
+     * and fills jPaint with proper version        *
+     ***********************************************/
+    public void loadData(String data) { 
 	for(int i = 0; i < easel.length; i++) {
 	    for(int j = 0; j < easel[0].length; j++) {
 		char newcolor = data.charAt(i * easel[0].length + j); //add row length to get down rows, then add which column to get to correct column
@@ -264,17 +301,24 @@ public class jPaint{
 	    }
 	}
     }
-    
-    public static jPaint load(String file) { //takes info from file "saves/file" and loads it into a new jPaint
+
+    /****************************************************************
+     * public static jPaint load(String fileName)                   *
+     * takes fileName and creates a string from that file's content *
+     * then sends that data to loadData to fill the jPaint          *
+     * returns the filled jPaint                                    *
+     ****************************************************************/
+
+    public static jPaint load(String fileName) { //takes info from file "saves/file" and loads it into a new jPaint
 	try {
-	    Scanner input = new Scanner(new File("saves/"+file)); //makes a new scanner reading from the file
+	    Scanner input = new Scanner(new File("saves/"+fileName)); //makes a new scanner reading from the file
 	    //Scanner uses words. First word in file is number of rows, second is number of columns, third
 	    //is the long string representing file data
-	    int rows = Integer.parseInt(input.next());
-	    int columns = Integer.parseInt(input.next());
+	    int height = Integer.parseInt(input.next());
+	    int width = Integer.parseInt(input.next());
 	    String data = input.next();
 	    input.close(); //we are done with file now
-	    jPaint jp = new jPaint(rows,columns);
+	    jPaint jp = new jPaint(height, width);
 	    jp.loadData(data);
 	    return jp;
 	}
@@ -284,6 +328,12 @@ public class jPaint{
 	}
 	return null;
     }	
+
+    /******************************************
+     * public void move(char key)             *
+     * moves cursor, direction depends on key *
+     * sort of an extension of input          *
+     ******************************************/
 
     public void move(char key) {
 	
@@ -326,12 +376,17 @@ public class jPaint{
 	    paint();
     }
     
+    /****************************************
+     * public void paint()                  *
+     * paints at location of brush          *
+     * called by move only if brush is down *
+     ****************************************/
     public void paint(){
 	int dist = 0;//twice the distance(used for more precise int)
 	for (int x = cursorX - radius; x <= cursorX + radius; x++){
 	    for (int y = cursorY - radius; y <= cursorY + radius; y++){
 		dist = (int)(2 * Math.sqrt(((cursorX - x)*(cursorX - x)) + ((cursorY - y)*(cursorY - y))));
-		if (shape == 's' || dist <= 2 * radius){
+		if (shape == 's' || dist <= 2 * radius){//paints if its a square or if its within proper distance
 		    if (x >= 0 && y >=0 && x < easel[0].length && y < easel.length){
 		    easel[y][x] = color ;
 		    }
@@ -340,6 +395,10 @@ public class jPaint{
 	}
     }
 
+    /****************************************************
+     * public void fill1(int x, int y, String newColor) *
+     * fills orthagonally                               *
+     ****************************************************/
     public void fill1(int x, int y, String newColor){//fill starting at this location and using newColor
 	String oldColor = easel[y][x];//used later to check if neighbors are the old color
 	easel[y][x] = newColor;
@@ -354,6 +413,10 @@ public class jPaint{
 	}
     }
     
+    /****************************************************
+     * public void fill2(int x, int y, String newColor) *
+     * fills orthagonally and diagonally                *
+     ****************************************************/
     public void fill2(int x, int y, String newColor){//fill starting at this location and using newColor
 	String oldColor = easel[y][x];//used later to check if neighbors are the old color
 	easel[y][x] = newColor;
@@ -367,7 +430,11 @@ public class jPaint{
 	    }
 	}
     }
-
+    
+    /*************************************************
+     * public void replace(String oldC, String newC) *
+     * replaces all of oldC with newC                *
+     *************************************************/
     public void replace(String oldC, String newC){
 
 	if (oldC.equals(newC))
