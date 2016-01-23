@@ -210,6 +210,14 @@ public class jPaint{
 	    else if(key == 't'){ //dropper tool
 		color = easel[cursorY][cursorX];
 	    }
+
+	    else if(key == 'm'){ //flip horizontal
+		flipH();
+	    }
+	    
+	    else if(key == 'n'){ //flip vertical
+		flipV();
+	    }
 	}
 	else if(mode.equals("color")) {
 	    int num =  Character.getNumericValue(key); //if key is not a number, gives -1
@@ -447,6 +455,36 @@ public class jPaint{
 		    easel[row][elmt] = newC;
 	    }
 	}
+    }
+
+    /********************************
+     * public void flipH()          *
+     * flips the easel horizontally *
+     ********************************/
+
+    public void flipH(){
+	String[][] flipped = new String[easel.length][easel[0].length];
+	for (int y = 0; y < easel.length; y++){
+	    for (int x = 0; x < easel[y].length; x++){
+		flipped[y][x] = easel[y][easel[y].length - x - 1]; 
+	    }
+	}
+	easel = flipped;	
+    }
+
+    /******************************
+     * public void flipV()        *
+     * flips the easel vertically *
+     ******************************/
+
+    public void flipV(){
+	String[][] flipped = new String[easel.length][easel[0].length];
+	for (int y = 0; y < easel.length; y++){
+	    for (int x = 0; x < easel[y].length; x++){
+		flipped[y][x] = easel[easel.length - y - 1][x]; 
+	    }
+	}
+	easel = flipped;	
     }
 
     /******
