@@ -48,3 +48,11 @@ Day 7 - 1/20/16
     Added dropper tool
     Press T to use the dropper on the current cursor location
 
+Day 8 - 1/22/16
+    Added jPaint.sh so user can enter raw mode, compile, and run all in one command
+    Limited size to 32x32 as a temporary solution to graphical glitches
+
+Day 9 - 1/23/16
+    Press H to replace all of the tiles of the same color the cursor is on with the brush color
+    Added dozens of comments and did some minor rearranging of code to make it easier to read and understand
+

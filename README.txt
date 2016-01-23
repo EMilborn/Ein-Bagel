@@ -1,12 +1,16 @@
 To run the program, open an ANSI terminal (basically not Windows Command Prompt) and execute:
-$ stty raw
-$ javac jPaint.java
-$ java jPaint
+$ bash jPaint.sh
+
+After using program you should execute:
+$ stty -raw
+or
+$ stty cooked
+
 Once you are in the program, controls:
 
 Initialization phase:
     Creating a new jPaint
-         WASD to resize easel
+         WASD to resize easel, max size 32 x 32
 	 ENTER when done
 	 
     Loading an old jPaint (Press L)
@@ -15,6 +19,7 @@ Initialization phase:
 	ENTER when done typing
 
 Main screen:
+
     WASDQEZC to move cursor and paint if brush is down
 
     X to lift or place the brush
@@ -42,6 +47,4 @@ Main screen:
 	C to use a circle brush
 	S to use a square brush  
     
-    SPACE to exit the program
-        you will probably want to exit raw mode when done using this program
-	to do this type stty -raw or stty cooked	
+    SPACE to exit the program	
