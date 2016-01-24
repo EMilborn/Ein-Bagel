@@ -325,8 +325,8 @@ public class jPaint{
 	ret += easel[0].length + " ";
 	for(String[] row : easel) {
 	    for(String c : row) {
-		//turns out \033 is stored as a single character, so each c is X[4Ym, Y is ind 3
-		ret += c.charAt(3);//adds just the number which distinguishes this color from the rest
+		//turns out \033 is stored as a single character, so each c is X[48;5;YYYm, y's start at ind 7 and end at 9
+		ret += c.substring(7,10);		
 	    }
 	}
 	return ret;
@@ -356,9 +356,10 @@ public class jPaint{
     public void loadData(String data) { 
 	for(int i = 0; i < easel.length; i++) {
 	    for(int j = 0; j < easel[0].length; j++) {
-		char newcolor = data.charAt(i * easel[0].length + j); //add row length to get down rows, then add which column to get to correct column
+		int pos = 3*(i*easel[0].length + j);
+		char newcolor = data.substring(pos,pos+3); //add row length to get down rows, then add which column to get to correct column, mult by 3 to scale
 		String old = easel[i][j];
-		easel[i][j] = old.substring(0,3) + newcolor + old.substring(4); //inserts the new color
+		easel[i][j] = old.substring(0,7) + newcolor + old.substring(10); //inserts the new color
 	    }
 	}
     }
