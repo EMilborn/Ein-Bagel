@@ -25,30 +25,14 @@ public class jPaint{
 
     private int radius; //radius of Brush
 
+    private int sliderR,sliderG,sliderB,sliderK; //slider values for coloring, grayscale uses K
+
     //ANSI escape sequences
     public static final String ANSI = "\033[";//ANSI escape code
     
     public static final String CLEAR = "\033c"; //special for reasons 
 
-    //BACKGROUND COLORS
-    public static final String BLACK = ANSI+"40m";
-    public static final String RED = ANSI+"41m";
-    public static final String GREEN = ANSI+"42m";
-    public static final String YELLOW = ANSI+"43m";
-    public static final String BLUE = ANSI+"44m";
-    public static final String PINK = ANSI+"45m";
-    public static final String CYAN = ANSI+"46m";
-    public static final String WHITE = ANSI+"47m";
-
-    //TEXT COLORS AND SETTINGS
-    public static final String CBLACK = ANSI+"30m";
-    public static final String CWHITE = ANSI+"37m";
-    
-    public static final String BOLD = ANSI+"1m";
-
     public static final String RESET = ANSI+"0m";//resets settings
-
-    private String[][] colors = new String[16][18];
     
     /**************
      *CONSTRUCTORS*
@@ -63,10 +47,10 @@ public class jPaint{
     public jPaint(int height, int width){
 	easel =  new String[height][width];//easel created
 	mode = "main";//mode set
-	color = BLACK;//default paint color set
+	color = color(16);//default paint color set
 	for (int i = 0; i < height; i++) {
 	    for(int j = 0; j < width; j++) {
-		easel[i][j] = WHITE;
+		easel[i][j] = color(231);
 	    }
 	}//makes easel white
 	cursorX = height / 2;
@@ -75,54 +59,23 @@ public class jPaint{
 	name = "";
 	shape = 's';
 	radius = 0;
-
-	//COLOR FILLING
-	//first fill all with black
-	for (int y = 0; y < 16; y++){
-	    for (int x = 0; x < 18; x++){
-		colors[y][x] = color(0);
-	    }
-	}
-
-	for (int y = 0; y < 2; y++){//adds bright colors
-	    for (int x = 0; x < 8; x++){
-		colors[y][x] = color(y * 8 + x);
-	    }
-	} 
-
-	//RGB colors
-	for (int red = 0; red < 6; red++){
-	    for(int blue = 0; blue < 6; blue++){
-		for (int green = 0; green < 3; green++){
-		    colors[red + 2][green * 6 + blue] = color(red*36 + blue*6 + green + 16);
-		}
-	    }
-	}
-	
-	for (int red = 0; red < 6; red++){
-	    for(int blue = 0; blue < 6; blue++){
-		for (int green = 3; green < 6; green++){
-		    colors[red + 8][green * 6 + blue - 18] = color(red*36 + blue*6 + green + 16);
-		}
-	    }
-	}
-	
-	//Greyscale
-	for (int x = 0; x < 12; x++){
-	    colors[14][x] = color(x + 232);
-	    colors[15][x] = color(x + 244);
-	}
-		
-	    
+	sliderR = 5;
+	sliderG = 5;
+	sliderB = 5;
+	sliderK = 25;
     }
-
-
-    
-
     /*********
      *METHODS*
      *********/
 
+    /*****************************************************
+     * returns the number corresponding to color (r,g,b) *
+     *****************************************************/
+    
+    public static int colorNumber(int r, int g, int b) {
+	return r*36 + g*6 + b + 16;
+    }
+    
     /**************************************
      * public static String color(int n)  *
      * returns the string form of color n *
@@ -175,7 +128,7 @@ public class jPaint{
 	    for(int i = 0; i < printEasel.length; i++) {//adds printEasel to ret
 		for(int j = 0; j < printEasel[0].length; j++) {
 		    if(j == cursorX && i == cursorY) {
-			ret += BLACK + CWHITE + BOLD + (cursorDown ? "><" : "||");//cursor center
+			ret += RESET + (cursorDown ? "><" : "||");//cursor center
 		    }
 		    else {
 			ret += printEasel[i][j] + "  ";
@@ -187,19 +140,29 @@ public class jPaint{
 	}
 	    
 	else if(mode == "color") {
-	    for (int y = 0; y < 16; y++){
-		for(int x = 0; x < 18; x++){
-		    ret += colors[y][x] +"  ";
-		}
-		ret+="\n" + del(36);
-	    }
+	    ret += "R - Enter RGB color selection";
+	    ret += "G - Enter grayscale color selection";
 	}
+	else if(mode == "rgb") {
+	    ret += "Q-\tRed: " + sliderR + "\t\tE+\r\n";
+	    ret += "A-\tGreen: " + sliderG + "\tD+\r\n";
+	    ret += "Z-\tBlue: " + sliderB + "\t\tC+\r\n";
+	    ret += color(colorNumber(sliderR,sliderG,sliderB)) + "                          ";
+	}
+	else if(mode == "grayscale") {
+	    ret += "-\t" + sliderK + "\t+\r\n";
+	    if(sliderK == 0) ret += color(16);
+	    else if(sliderK == 25) ret += color(231);
+	    else ret += color(231 + sliderK);
+	    ret += "                          ";
+	}
+	    
 	else if(mode == "save") {
 	    ret += (RESET + "Enter a name for your file: " + name);
 	}
 	else if (mode == "brush"){
-	    ret += "c\t-\tset shape to circle\n" + del(35);
-	    ret += "s\t-\tset shape to square\n" + del (35);
+	    ret += "C\t-\tset shape to circle\n" + del(35);
+	    ret += "S\t-\tset shape to square\n" + del (35);
 	    ret += "digit\t-\tset size to that digit\n\n" + del(38);
 	    ret += "current radius: " + radius + "\n" + del (27);
 	    ret += "current brush shape: ";
@@ -295,14 +258,45 @@ public class jPaint{
 	    }
 	}
 	else if(mode.equals("color")) {
-	    int num =  Character.getNumericValue(key); //if key is not a number, gives -1
-	    if(num == -1 || num > 7) { //0-7 selection only
-		return;
-	    }
-	    //else:
-	    color = ANSI + "4" + num + "m"; //sets the color to correct ANSI sequence
-	    mode = "main";
+	    if(key == 'g') mode = "grayscale";
+	    else if(key == 'r') mode = "rgb";
 	}
+	else if(mode == "grayscale"){
+	    if(key == '+') sliderK += 1;
+	    else if(key == '-') sliderK -= 1;
+	    else if(i == 13) {
+		String newC = "";
+		//for 0 or 25, set to real black/white
+		if(sliderK == 0) newC = color(16);
+		else if(sliderK == 25) newC = color(231);
+		else newC = color(231 + sliderK);
+		color = newC;
+		mode = "main";
+	    }
+	    if(sliderK > 25) sliderK = 25;
+	    if(sliderK < 0) sliderK = 0;
+	}
+	else if(mode == "rgb") {
+	    if(key == 'q') sliderR -= 1;
+	    if(key == 'e') sliderR += 1;
+	    if(sliderR < 0) sliderR = 0;
+	    if(sliderR > 5) sliderR = 5;
+	    
+	    if(key == 'a') sliderG -= 1;
+	    if(key == 'd') sliderG += 1;
+	    if(sliderG < 0) sliderG = 0;
+	    if(sliderG > 5) sliderG = 5;
+	    
+	    if(key == 'z') sliderB -= 1;
+	    if(key == 'c') sliderB += 1;
+	    if(sliderB < 0) sliderB = 0;
+	    if(sliderB > 5) sliderB = 5;
+
+	    if(i == 13) {
+		color = color(colorNumber(sliderR,sliderG,sliderB));
+		mode = "main";
+	    }
+	}   
 	
 	else if(mode == "save") {
 	    if(i == 127 || i == 8) { //8 and 127 are backspace and delete sometimes
@@ -398,7 +392,7 @@ public class jPaint{
 
     public static jPaint load(String fileName) { //takes info from file "saves/file" and loads it into a new jPaint
 	try {
-	    Scanner input = new Scanner(new File("saves/"+fileName)); //makes a new scanner reading from the file
+	    Scanner input = new Scanner(new File("saves/" + fileName)); //makes a new scanner reading from the file
 	    //Scanner uses words. First word in file is number of rows, second is number of columns, third
 	    //is the long string representing file data
 	    int height = Integer.parseInt(input.next());
@@ -579,7 +573,7 @@ public class jPaint{
 
 	    //System.out.println once before while loop
 	    System.out.print(CLEAR);
-	    System.out.print(RED);
+	    System.out.print(color(196));
 	    System.out.print(del(1)); //delete red? idk but you need it
 	    for(int i = 0; i < height; i++) {
 		for(int j = 0; j < width; j++) {
@@ -628,7 +622,7 @@ public class jPaint{
 		    if(width < 1) width = 1;
 		    //System.out.println it
 		    System.out.print(CLEAR);
-		    System.out.print(RED);
+		    System.out.print(color(196));
 		    System.out.print(del(1)); //delete red? idk but you need it
 		    for(int i = 0; i < height; i++) {
 			for(int j = 0; j < width; j++) {
@@ -657,7 +651,7 @@ public class jPaint{
 			name += key;
 		    }
 		    System.out.print(CLEAR + RESET + "\033[0;0H");
-		    System.out.print("Enter file name: " + name);
+		    System.out.print("Enter file name: " + name + "\n");
 		}
 	    }
 	    if(!loadMode) //else its already initialized
