@@ -33,6 +33,7 @@ public class jPaint{
     public static final String CLEAR = "\033c"; //special for reasons 
 
     public static final String RESET = ANSI+"0m";//resets settings
+
     
     /**************
      *CONSTRUCTORS*
@@ -63,6 +64,7 @@ public class jPaint{
 	sliderG = 5;
 	sliderB = 5;
 	sliderK = 25;
+
     }
     /*********
      *METHODS*
@@ -143,12 +145,14 @@ public class jPaint{
 	    ret += "R - Enter RGB color selection";
 	    ret += "G - Enter grayscale color selection";
 	}
+
 	else if(mode == "rgb") {
 	    ret += "Q-\tRed: " + sliderR + "\t\tE+\r\n";
 	    ret += "A-\tGreen: " + sliderG + "\tD+\r\n";
 	    ret += "Z-\tBlue: " + sliderB + "\t\tC+\r\n";
 	    ret += color(colorNumber(sliderR,sliderG,sliderB)) + "                          ";
 	}
+
 	else if(mode == "grayscale") {
 	    ret += "-\t" + sliderK + "\t+\r\n";
 	    if(sliderK == 0) ret += color(16);
@@ -157,7 +161,7 @@ public class jPaint{
 	    ret += "                          ";
 	}
 	    
-	else if(mode == "save") {
+	else if(mode == "save" || mode == "exitsave") {
 	    ret += (RESET + "Enter a name for your file: " + name);
 	}
 	else if (mode == "brush"){
@@ -190,6 +194,11 @@ public class jPaint{
 		"H - This dialog\r\n" +
 		"Enter - Exit this dialog\r\n";
 	}
+	else if (mode == "exit"){
+	    ret +=
+		"Do you want save before exiting?\r\n" +
+		"Q - Yes\t\tE - no";
+	}
 	return ret;
     }
     //Handles input to do certain things in certain modes, returns if input is valid
@@ -206,8 +215,7 @@ public class jPaint{
 		move(key);
 	    }
 	    else if(key == ' ') {// button to exit program ( ctrl-c wouldnt reset colors)
-		System.out.println(RESET);
-		System.exit(0); //stops program
+	        mode = "exit";
 	    }
 
 	    //MODE SWITCHES
@@ -298,7 +306,7 @@ public class jPaint{
 	    }
 	}   
 	
-	else if(mode == "save") {
+	else if(mode == "save" || mode == "exitsave") {
 	    if(i == 127 || i == 8) { //8 and 127 are backspace and delete sometimes
 		if(name.length() == 0) 
 		    return;//cant delete if its already blank
@@ -307,6 +315,10 @@ public class jPaint{
 	    
 	    else if(i == 13) {//Enter/return
 		if(name.length() > 0) save();//wont save if string is blank
+		if(mode == "exitsave"){
+		    System.out.print(CLEAR + RESET);
+		    System.exit(0);
+		}
 		mode = "main";
 	    }
 	    else {//any other character
@@ -330,6 +342,15 @@ public class jPaint{
 	else if(mode == "help"){
 	    if(i == 13) mode = "main"; //Enter
 	}
+	else if (mode == "exit"){
+	    if(key == 'e'){
+		System.out.print(CLEAR + RESET);
+		System.exit(0);
+	    }
+	    if(key == 'q'){
+		mode = "exitsave";
+	    }
+	}
     }
     
     /**********************************************
@@ -350,6 +371,7 @@ public class jPaint{
 	}
 	return ret;
     }
+    
 							
     /**************************************
      * public void save()                 *
