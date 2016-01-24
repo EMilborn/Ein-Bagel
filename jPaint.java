@@ -48,7 +48,7 @@ public class jPaint{
     public jPaint(int height, int width){
 	easel =  new String[height][width];//easel created
 	mode = "main";//mode set
-	color = color(16);//default paint color set
+	color = color(colorNumber(1, 1, 1));//default paint color set
 	for (int i = 0; i < height; i++) {
 	    for(int j = 0; j < width; j++) {
 		easel[i][j] = color(231);
@@ -60,9 +60,9 @@ public class jPaint{
 	name = "";
 	shape = 's';
 	radius = 0;
-	sliderR = 0;
-	sliderG = 0;
-	sliderB = 0;
+	sliderR = 1;
+	sliderG = 1;
+	sliderB = 1;
 
     }
     /*********
@@ -114,17 +114,41 @@ public class jPaint{
     public static String del(int n) {
 	return ANSI + n + "D";
     }
+
+
+    /**********************************************
+     * public String brushToString()              *
+     * returns a Stringifyed version of the brush *
+     **********************************************/
+    public String brushToString(){
+	String ret = RESET;
+	for (int y = 0; y < radius * 2 + 1; y++){
+	    for (int x = 0; x < radius * 2 + 1; x++){
+		int dist = (int)(2 * Math.sqrt((y - radius) * (y - radius) + (x - radius) * (x - radius)));
+		if (shape == 's' || dist <= radius * 2){
+		    ret += color;
+		}
+		else 
+		    ret += RESET;
+		ret += "  ";
+	    }
+	    ret += "\r\n";
+	}
+	return ret;
+    }
     
 
     /********************************
      * public static toString()     *
      * over-written toString method *
      ********************************/
+
     public String toString() {
 	String ret = "";
 	ret = (CLEAR); //clear first
 	ret += "\033[0;0H"; //set terminal cursor (not jPaint cursor) pos to 0,0 just in case something is weird
 	if(mode == "main") {//different modes need different implementations of toString
+	    ret += "Your Drawing:\r\n";
 	    String[][] printEasel = new String[easel.length][easel[0].length];
 	    for(int i = 0; i < easel.length; i++) {//fills print easel
 		for(int j = 0; j < easel[0].length; j++) {
@@ -156,10 +180,13 @@ public class jPaint{
 		}
 		ret += "\n" + del(easel[0].length*2);	
 	    }
-	    ret += RESET+"\nH - Help menu";
+	    ret += RESET+"\nH\t-\tHelp menu\r\n";
+	    ret += "Current Brush:\r\n";
+	    ret += brushToString();
 	}
 
 	else if(mode == "rgb") {
+	    ret += "Color Menu:\r\n";
 	    ret += "Q-\tRed: " + sliderR + "\t\tE+\r\n";
 	    ret += "A-\tGreen: " + sliderG + "\tD+\r\n";
 	    ret += "Z-\tBlue: " + sliderB + "\t\tC+\r\n";
@@ -167,42 +194,42 @@ public class jPaint{
 	}
 	    
 	else if(mode == "save" || mode == "exitsave") {
-	    ret += (RESET + "Enter a name for your file: " + name);
+	    ret += "Save Menu:\r\n";
+	    ret += RESET + "Enter a name for your file: " + name + "\r\n";
+	    ret += "Press Enter when done";
 	}
 	else if (mode == "brush"){
-	    ret += "C\t-\tset shape to circle\n" + del(35);
-	    ret += "S\t-\tset shape to square\n" + del (35);
-	    ret += "digit\t-\tset size to that digit\n\n" + del(38);
-	    ret += "current radius: " + radius + "\n" + del (27);
-	    ret += "current brush shape: ";
-	    if (shape == 's')
-		ret += "square";
-	    else 
-		ret+= "circle";
-	    ret += "\n";
+	    ret += "Brush Menu\r\n";
+	    ret += "C\t-\tset shape to circle\r\n";
+	    ret += "S\t-\tset shape to square\r\n" + del (35);
+	    ret += "digit\t-\tset size to that digit\r\n\n";
+	    ret += "Current Brush:\r\n";
+	    ret += brushToString();
 	}
 	else if(mode == "help") {
 	    ret +=
-		"WASD - Orthogonal movement\r\n" +
-		"QEZC - Diagonal movement\r\n" +
-		"Space - Exit program\r\n" +
-		"R - Enter color mode\r\n" +
-		"B - Enter brush mode\r\n" +
-		"V - Enter save mode\r\n" +
-		"F - Orthogonal fill\r\n" +
-		"G - Orthogonal + diagonal fill\r\n" +
-		"L - Replace\r\n" +
-		"X - Toggle brush up/down\r\n" +
-		"T - Dropper (Set current color to color under cursor)\r\n" +
-		"M - Horizontal flip\r\n" +
-		"N - Vertical flip\r\n" +
-		"H - This dialog\r\n" +
-		"Enter - Exit this dialog\r\n";
+		"Help Menu:\r\n" +
+		"Key\t-\tWhat it does\r\n" +
+		"WASD\t-\tOrthogonal movement\r\n" +
+		"QEZC\t-\tDiagonal movement\r\n" +
+		"Space\t-\tExit program\r\n" +
+		"R\t-\tEnter color mode\r\n" +
+		"B\t-\tEnter brush mode\r\n" +
+		"V\t-\tEnter save mode\r\n" +
+		"F\t-\tOrthogonal fill\r\n" +
+		"G\t-\tOrthogonal + diagonal fill\r\n" +
+		"L\t-\tReplace\r\n" +
+		"X\t-\tToggle brush up/down\r\n" +
+		"T\t-\tDropper (Set current color to color under cursor)\r\n" +
+		"M\t-\tHorizontal flip\r\n" +
+		"N\t-\tVertical flip\r\n" +
+		"H\t-\tThis dialog\r\n" +
+		"Enter\t-\tExit this dialog\r\n";
 	}
 	else if (mode == "exit"){
 	    ret +=
 		"Do you want save before exiting?\r\n" +
-		"Q - Yes\t\tE - no";
+		"Q - YES\t\tE - NO";
 	}
 	return ret;
     }
