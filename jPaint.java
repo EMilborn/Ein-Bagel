@@ -78,6 +78,17 @@ public class jPaint{
 	return r*36 + g*6 + b + 16;
     }
 
+    /***************************************************
+     * public String cursorColor ()                    *
+     * returns the String to set the cursor text color *
+     ***************************************************/
+
+    public String cursorColor(){
+	String ret = ANSI + "38;5;" + colorNumber( 5 - sliderR, 5 - sliderG, 5 - sliderB) + "m";
+	
+	return ret;
+    }
+
 
     /*************************************************************
      * public void colorToRGB(String clr)                        *
@@ -172,7 +183,7 @@ public class jPaint{
 	    for(int i = 0; i < printEasel.length; i++) {//adds printEasel to ret
 		for(int j = 0; j < printEasel[0].length; j++) {
 		    if(j == cursorX && i == cursorY) {
-			ret += RESET + (cursorDown ? "><" : "||");//cursor center
+			ret += color + cursorColor() + (cursorDown ? "><" : "||") + RESET;//cursor center
 		    }
 		    else {
 			ret += printEasel[i][j] + "  ";
@@ -181,8 +192,7 @@ public class jPaint{
 		ret += "\n" + del(easel[0].length*2);	
 	    }
 	    ret += RESET+"\nH\t-\tHelp menu\r\n";
-	    ret += "Current Brush:\r\n";
-	    ret += brushToString();
+
 	}
 
 	else if(mode == "rgb") {
