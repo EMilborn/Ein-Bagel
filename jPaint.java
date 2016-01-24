@@ -48,6 +48,8 @@ public class jPaint{
 
     public static final String RESET = ANSI+"0m";//resets settings
 
+    private String[][] colors = new String[16][18];
+    
     /**************
      *CONSTRUCTORS*
      **************/
@@ -73,13 +75,63 @@ public class jPaint{
 	name = "";
 	shape = 's';
 	radius = 0;
+
+	//COLOR FILLING
+	//first fill all with black
+	for (int y = 0; y < 16; y++){
+	    for (int x = 0; x < 18; x++){
+		colors[y][x] = color(0);
+	    }
+	}
+
+	for (int y = 0; y < 2; y++){//adds bright colors
+	    for (int x = 0; x < 8; x++){
+		colors[y][x] = color(y * 8 + x);
+	    }
+	} 
+
+	//RGB colors
+	for (int red = 0; red < 6; red++){
+	    for(int blue = 0; blue < 6; blue++){
+		for (int green = 0; green < 3; green++){
+		    colors[red + 2][green * 6 + blue] = color(red*36 + blue*6 + green + 16);
+		}
+	    }
+	}
+	
+	for (int red = 0; red < 6; red++){
+	    for(int blue = 0; blue < 6; blue++){
+		for (int green = 3; green < 6; green++){
+		    colors[red + 8][green * 6 + blue - 18] = color(red*36 + blue*6 + green + 16);
+		}
+	    }
+	}
+	
+	//Greyscale
+	for (int x = 0; x < 12; x++){
+	    colors[14][x] = color(x + 232);
+	    colors[15][x] = color(x + 244);
+	}
+		
+	    
     }
 
+
+    
 
     /*********
      *METHODS*
      *********/
 
+    /**************************************
+     * public static String color(int n)  *
+     * returns the string form of color n *
+     **************************************/
+
+    public static String color(int n){
+        String ret = ANSI + "48;5;" + String.format("%03d", n) + "m";
+	return ret;
+    }
 
     /***********************************
      * public static String del(int n) *
@@ -135,10 +187,11 @@ public class jPaint{
 	}
 	    
 	else if(mode == "color") {
-	    String x = RESET + CWHITE + "Choose color\n\n";
-	    ret += x + del(x.length());
-	    for(int i = 0; i < 8; i++) {
-		ret += RESET + i + " " + ANSI + "4" + i + "m  \n" + del(4);
+	    for (int y = 0; y < 16; y++){
+		for(int x = 0; x < 18; x++){
+		    ret += colors[y][x] +"  ";
+		}
+		ret+="\n" + del(36);
 	    }
 	}
 	else if(mode == "save") {
