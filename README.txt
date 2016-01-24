@@ -1,17 +1,12 @@
-To run the program, open an ANSI terminal (basically not Windows Command Prompt) and execute:
+To run the program, open an ANSI terminal (basically not Windows Command Prompt), change Directory to Ein-Bagel, and execute:
 $ bash jPaint.sh
-
-After using program you should execute:
-$ stty -raw
-or
-$ stty cooked
 
 Once you are in the program, controls:
 
 Initialization phase:
     Creating a new jPaint
-         WASD to resize easel, max size 32 x 32
-	 ENTER when done
+        WASD to resize easel, max size 32 x 32
+	ENTER when done
 	 
     Loading an old jPaint (Press L)
         Type to name file

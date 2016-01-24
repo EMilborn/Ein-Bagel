@@ -55,4 +55,14 @@ Day 8 - 1/22/16
 Day 9 - 1/23/16
     Press H to replace all of the tiles of the same color the cursor is on with the brush color
     Added dozens of comments and did some minor rearranging of code to make it easier to read and understand
+    Made it so that you can run one command which changes terminal to raw runs and changes back to cooked
+    Added flipping press m to flip horizontal n for vertical
+    Changed to 216 colors changed color menu and other things to implement 216 colors
+    Added help menu press H to see help menu in main mode
+    Program now asks user if they want to save before exiting
+    
+Day 10 - 1/24/16
+    Removed greyscale to simplify user experience
+    Dropper now changes the values for the sliders, so that if you change color to green using dropper the color in color menu is also green :D
+    
 
