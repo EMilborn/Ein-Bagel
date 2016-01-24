@@ -131,6 +131,7 @@ public class jPaint{
 		}
 		ret += "\n" + del(easel[0].length*2);	
 	    }
+	    ret += RESET+"\nH - Help menu";
 	}
 	    
 	else if(mode == "color") {
@@ -154,6 +155,24 @@ public class jPaint{
 	    else 
 		ret+= "circle";
 	    ret += "\n";
+	}
+	else if(mode == "help") {
+	    ret +=
+		"WASD - Orthogonal movement\r\n" +
+		"QEZC - Diagonal movement\r\n" +
+		"Space - Exit program\r\n" +
+		"R - Enter color mode\r\n" +
+		"B - Enter brush mode\r\n" +
+		"V - Enter save mode\r\n" +
+		"F - Orthogonal fill\r\n" +
+		"G - Orthogonal + diagonal fill\r\n" +
+		"L - Replace\r\n" +
+		"X - Toggle brush up/down\r\n" +
+		"T - Dropper (Set current color to color under cursor)\r\n" +
+		"M - Horizontal flip\r\n" +
+		"N - Vertical flip\r\n" +
+		"H - This dialog\r\n" +
+		"Enter - Exit this dialog\r\n";
 	}
 	return ret;
     }
@@ -197,7 +216,7 @@ public class jPaint{
 		fill2(cursorX, cursorY, color); // Fill2 = orthagonal + diagonal
 	    }
 	    
-	    else if(key == 'h'){
+	    else if(key == 'l'){
 		replace(easel[cursorY][cursorX], color); // like fill but replaces all of that color
 	    }
 
@@ -217,6 +236,9 @@ public class jPaint{
 	    
 	    else if(key == 'n'){ //flip vertical
 		flipV();
+	    }
+	    else if(key == 'h'){ //i need somebody
+		mode = "help";
 	    }
 	}
 	else if(mode.equals("color")) {
@@ -257,6 +279,9 @@ public class jPaint{
 	    else if (i == 13){//Enter
 		mode = "main";
 	    }
+	}
+	else if(mode == "help"){
+	    if(i == 13) mode = "main"; //Enter
 	}
     }
     
@@ -304,7 +329,7 @@ public class jPaint{
 	for(int i = 0; i < easel.length; i++) {
 	    for(int j = 0; j < easel[0].length; j++) {
 		int pos = 3*(i*easel[0].length + j);
-		char newcolor = data.substring(pos,pos+3); //add row length to get down rows, then add which column to get to correct column, mult by 3 to scale
+	        String newcolor = data.substring(pos,pos+3); //add row length to get down rows, then add which column to get to correct column, mult by 3 to scale
 		String old = easel[i][j];
 		easel[i][j] = old.substring(0,7) + newcolor + old.substring(10); //inserts the new color
 	    }
