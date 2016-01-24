@@ -60,22 +60,40 @@ public class jPaint{
 	name = "";
 	shape = 's';
 	radius = 0;
-	sliderR = 5;
-	sliderG = 5;
-	sliderB = 5;
-	sliderK = 25;
+	sliderR = 0;
+	sliderG = 0;
+	sliderB = 0;
 
     }
     /*********
      *METHODS*
      *********/
 
-    /*****************************************************
-     * returns the number corresponding to color (r,g,b) *
-     *****************************************************/
+    /*******************************************************
+     * public static int colorNumber (int r, int g, int b) *
+     * returns the number corresponding to color (r,g,b)   *
+     *******************************************************/
     
     public static int colorNumber(int r, int g, int b) {
 	return r*36 + g*6 + b + 16;
+    }
+
+
+    /*************************************************************
+     * public void colorToRGB(String clr)                        *
+     * inverts method colorNumber()                              *
+     * by setting rgb sliders to correct values for String color *
+     *************************************************************/
+
+    public void colorToRGB(String clr){
+	clr = clr.substring(7,10);//range for 3 digit number
+	int RGB = Integer.parseInt(clr);
+	RGB -= 16;
+	sliderR = RGB/36;
+	RGB -= sliderR * 36;
+	sliderG = RGB/6;
+	RGB -= sliderG * 6;
+	sliderB = RGB;	
     }
     
     /**************************************
@@ -140,25 +158,12 @@ public class jPaint{
 	    }
 	    ret += RESET+"\nH - Help menu";
 	}
-	    
-	else if(mode == "color") {
-	    ret += "R - Enter RGB color selection";
-	    ret += "G - Enter grayscale color selection";
-	}
 
 	else if(mode == "rgb") {
 	    ret += "Q-\tRed: " + sliderR + "\t\tE+\r\n";
 	    ret += "A-\tGreen: " + sliderG + "\tD+\r\n";
 	    ret += "Z-\tBlue: " + sliderB + "\t\tC+\r\n";
 	    ret += color(colorNumber(sliderR,sliderG,sliderB)) + "                          ";
-	}
-
-	else if(mode == "grayscale") {
-	    ret += "-\t" + sliderK + "\t+\r\n";
-	    if(sliderK == 0) ret += color(16);
-	    else if(sliderK == 25) ret += color(231);
-	    else ret += color(231 + sliderK);
-	    ret += "                          ";
 	}
 	    
 	else if(mode == "save" || mode == "exitsave") {
@@ -220,7 +225,7 @@ public class jPaint{
 
 	    //MODE SWITCHES
 	    else if(key == 'r') {// enter color mode
-		mode = "color";
+		mode = "rgb";
 	    }
 	    
 	    else if(key == 'b'){// enter brush mode
@@ -252,6 +257,7 @@ public class jPaint{
 
 	    else if(key == 't'){ //dropper tool
 		color = easel[cursorY][cursorX];
+		colorToRGB(color);
 	    }
 
 	    else if(key == 'm'){ //flip horizontal
@@ -265,25 +271,7 @@ public class jPaint{
 		mode = "help";
 	    }
 	}
-	else if(mode.equals("color")) {
-	    if(key == 'g') mode = "grayscale";
-	    else if(key == 'r') mode = "rgb";
-	}
-	else if(mode == "grayscale"){
-	    if(key == '+') sliderK += 1;
-	    else if(key == '-') sliderK -= 1;
-	    else if(i == 13) {
-		String newC = "";
-		//for 0 or 25, set to real black/white
-		if(sliderK == 0) newC = color(16);
-		else if(sliderK == 25) newC = color(231);
-		else newC = color(231 + sliderK);
-		color = newC;
-		mode = "main";
-	    }
-	    if(sliderK > 25) sliderK = 25;
-	    if(sliderK < 0) sliderK = 0;
-	}
+
 	else if(mode == "rgb") {
 	    if(key == 'q') sliderR -= 1;
 	    if(key == 'e') sliderR += 1;
