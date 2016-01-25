@@ -634,6 +634,8 @@ public class jPaint{
 		System.out.println();
 		System.out.print(del(width*2)); //deletes all that space
 	    }
+	    System.out.println(RESET + "WASD -  change the size of your easel\r");
+	    System.out.println("L    -  load a file");
 
 	    while(true) { // sizing loop
 		int keyCode = 0;
@@ -674,12 +676,17 @@ public class jPaint{
 			System.out.println();
 			System.out.print(del(width*2)); //deletes all that space
 		    }
+		    
+		     System.out.println(RESET + "WASD -  change the size of your easel\r");
+		     System.out.println("L    -  load a file");
+
 		    if (key == 'l') { //loading time, below printing so it can print different stuff instead
 			loadMode = true;
 			System.out.print(CLEAR + RESET + "\033[0;0H");
 			System.out.print("Enter file name: " + name);
 			
 		    }
+
 		}
 		else {
 		    
