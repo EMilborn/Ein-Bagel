@@ -64,5 +64,10 @@ Day 9 - 1/23/16
 Day 10 - 1/24/16
     Removed greyscale to simplify user experience
     Dropper now changes the values for the sliders, so that if you change color to green using dropper the color in color menu is also green :D
+    Made load work again
+    Added cursor demo in brush screen
+    Changed around cursor so it shows you your color
+    Made whole cursor have cursor text on it
+    Bolded cursor
     
 
