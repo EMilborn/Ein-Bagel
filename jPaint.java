@@ -692,6 +692,9 @@ public class jPaint{
 			System.out.println();
 			System.out.print(del(width*2)); //deletes all that space
 		    }
+		    
+		     System.out.println(RESET + "WASD -  change the size of your easel\r");
+		     System.out.println("L    -  load a file");
 
 		    if (key == 'l') { //loading time, below printing so it can print different stuff instead
 			loadMode = true;
