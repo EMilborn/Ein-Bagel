@@ -206,7 +206,8 @@ public class jPaint{
 	    ret += "Q-\tRed: " + sliderR + "\t\tE+\r\n";
 	    ret += "A-\tGreen: " + sliderG + "\tD+\r\n";
 	    ret += "Z-\tBlue: " + sliderB + "\t\tC+\r\n";
-	    ret += color(colorNumber(sliderR,sliderG,sliderB)) + "                          ";
+	    ret += color(colorNumber(sliderR,sliderG,sliderB)) + "                          " + RESET;
+	    ret += "\r\n\nPress Enter to return to your drawing";
 	}
 	    
 	else if(mode == "save" || mode == "exitsave") {
@@ -219,6 +220,7 @@ public class jPaint{
 	    ret += "C\t-\tset shape to circle\r\n";
 	    ret += "S\t-\tset shape to square\r\n" + del (35);
 	    ret += "digit\t-\tset size to that digit\r\n\n";
+	    ret += "Press Enter to return to your drawing\r\n\n";
 	    ret += "Current Brush:\r\n";
 	    ret += brushToString();
 	}
@@ -229,9 +231,9 @@ public class jPaint{
 		"WASD\t-\tOrthogonal movement\r\n" +
 		"QEZC\t-\tDiagonal movement\r\n" +
 		"Space\t-\tExit program\r\n" +
-		"R\t-\tEnter color mode\r\n" +
-		"B\t-\tEnter brush mode\r\n" +
-		"V\t-\tEnter save mode\r\n" +
+		"R\t-\tEnter brush color menu\r\n" +
+		"B\t-\tEnter brush shape menu \r\n" +
+		"V\t-\tSave your drawing\r\n" +
 		"F\t-\tOrthogonal fill\r\n" +
 		"G\t-\tOrthogonal + diagonal fill\r\n" +
 		"L\t-\tReplace\r\n" +
@@ -240,7 +242,7 @@ public class jPaint{
 		"M\t-\tHorizontal flip\r\n" +
 		"N\t-\tVertical flip\r\n" +
 		"H\t-\tThis dialog\r\n" +
-		"Enter\t-\tExit this dialog\r\n";
+		"\nEnter\t-\tExit this dialog\r\n";
 	}
 	else if (mode == "exit"){
 	    ret +=
