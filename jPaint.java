@@ -651,6 +651,8 @@ public class jPaint{
 		System.out.println();
 		System.out.print(del(width*2)); //deletes all that space
 	    }
+	    System.out.println(RESET + "WASD -  change the size of your easel\r");
+	    System.out.println("L    -  load a file");
 
 	    while(true) { // sizing loop
 		int keyCode = 0;
@@ -700,6 +702,8 @@ public class jPaint{
 			System.out.println();
 			System.out.print(del(width*2)); //deletes all that space
 		    }
+		    System.out.println(RESET + "WASD -  change the size of your easel\r");
+		    System.out.println("L    -  load a file");
 		}
 		if(loadMode) { //instead of else, another if so that pressing L will update screen
 		    
