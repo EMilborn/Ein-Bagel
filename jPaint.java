@@ -87,13 +87,16 @@ public class jPaint{
 
     public String cursorColor(){
 	String ret = ANSI + "38;5;";
-	if(sliderR+sliderG+sliderB >=8) { //closer to white than black
+
+
+	if(sliderR + sliderG + sliderB >=8) { //closer to white than black
 	    ret += 16;
 	}
 	else { //closer to black
 	    ret += 231;
 	}
 	return ret + "m";
+
     }
 
 
@@ -192,8 +195,20 @@ public class jPaint{
 		    if(j == cursorX && i == cursorY) {
 			ret += BOLD + color + cursorColor() + (cursorDown ? "><" : "||") + RESET;//cursor center
 		    }
+		    else if (shape == 's' && 
+			     (((i == cursorY + radius || i == cursorY - radius) && 
+			       (j >= cursorX - radius && j <= cursorX + radius))
+			      || 
+			      (j == cursorX + radius || j == cursorX - radius) && 
+			      (i >= cursorY - radius && i <= cursorY + radius)))
+			ret += color + cursorColor() + (cursorDown ? "><" : "||") + RESET;
+
+		    else if (shape == 'c' &&
+			     (((int)(2 * Math.sqrt(((cursorX - j)*(cursorX-j)) + ((cursorY - i)*(cursorY - i))))) == radius * 2))
+			ret += color + cursorColor() + (cursorDown ? "><" : "||") + RESET;		    
+			      
 		    else {
-			ret += printEasel[i][j] + "  ";
+			ret += printEasel[i][j] + cursorColor() +  "  ";
 		    }
 		}
 		ret += "\n" + del(easel[0].length*2);	
