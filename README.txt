@@ -1,45 +1,6 @@
-To run the program, open an ANSI terminal (basically not Windows Command Prompt), change Directory to Ein-Bagel, and execute:
+DESCRIPTION
+jPaint is a tool to paint in the terminal. You control a cursor and can utilize many tools to paint anything you want (with the constraint of a 32x32 palette). For a demonstration of what is possible with this program, (L)oad the file "mario" in the first screen of the program.
+
+HOW TO USE
+To run the program, open an ANSI terminal with 256 colors(basically not Windows Command Prompt), change directory to Ein-Bagel, and execute:
 $ bash jPaint.sh
-
-Once you are in the program, controls:
-
-Initialization phase:
-    Creating a new jPaint
-        WASD to resize easel, max size 32 x 32
-	ENTER when done
-	 
-    Loading an old jPaint (Press L)
-        Type to name file
-	No file extension necessary
-	ENTER when done typing
-
-Main screen:
-
-    WASDQEZC to move cursor and paint if brush is down
-
-    X to lift or place the brush
-        By default the brush is up, when it is down you can paint with the current color
-
-    R to go into the color menu
-        0-7 to select a color for painting
-	Will close when done
-
-    V to go into the save screen
-      	Type to name file
-	Enter to select file name
-
-    F to fill
-      	Turns all connected tiles of the same color (as the one under the cursor) to the brush color
-	Will only fill those that are orthagonally adjacent (ie not diagonally)
-
-    G to grow
-        Similiar to fill except that it fills diagonally and orthagonally	
-
-    T to take the color of the paint underneath the cursor
-    
-    B to change the size and shape of your brush
-        0-9 to change the radius of the brush
-	C to use a circle brush
-	S to use a square brush  
-    
-    SPACE to exit the program	
