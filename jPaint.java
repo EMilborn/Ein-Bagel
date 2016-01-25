@@ -184,32 +184,16 @@ public class jPaint{
 		    dist = (int)(2 * Math.sqrt(((cursorX - x)*(cursorX - x)) + ((cursorY - y)*(cursorY - y))));
 		    if (shape == 's' || dist <= 2 * radius){
 			if (x >= 0 && y >=0 && x < printEasel[0].length && y < printEasel.length){
-			    printEasel[y][x] = color;
+			    printEasel[y][x] = "C" + color + BOLD + cursorColor() + (cursorDown ? "><" : "||") + RESET;
 			}
 		    }
 		}
 	    }
 	   
 	    for(int i = 0; i < printEasel.length; i++) {//adds printEasel to ret
-		for(int j = 0; j < printEasel[0].length; j++) {
-		    if(j == cursorX && i == cursorY) {
-			ret += BOLD + color + cursorColor() + (cursorDown ? "><" : "||") + RESET;//cursor center
-		    }
-		    else if (shape == 's' && 
-			     (((i == cursorY + radius || i == cursorY - radius) && 
-			       (j >= cursorX - radius && j <= cursorX + radius))
-			      || 
-			      (j == cursorX + radius || j == cursorX - radius) && 
-			      (i >= cursorY - radius && i <= cursorY + radius)))
-			ret += color + cursorColor() + (cursorDown ? "><" : "||") + RESET;
-
-		    else if (shape == 'c' &&
-			     (((int)(2 * Math.sqrt(((cursorX - j)*(cursorX-j)) + ((cursorY - i)*(cursorY - i))))) == radius * 2))
-			ret += color + cursorColor() + (cursorDown ? "><" : "||") + RESET;		    
-			      
-		    else {
-			ret += printEasel[i][j] + cursorColor() +  "  ";
-		    }
+		for(int j = 0; j < printEasel[0].length; j++) {		    
+		    if(printEasel[i][j].charAt(0) == 'C') ret += printEasel[i][j].substring(1); //on cursor
+		    else ret += printEasel[i][j] + "  "; //not on cursor
 		}
 		ret += "\n" + del(easel[0].length*2);	
 	    }
