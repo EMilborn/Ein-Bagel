@@ -34,6 +34,8 @@ public class jPaint{
 
     public static final String RESET = ANSI+"0m";//resets settings
 
+    public static final String BOLD = ANSI+"1m"; //bold for cursor
+
     
     /**************
      *CONSTRUCTORS*
@@ -84,9 +86,14 @@ public class jPaint{
      ***************************************************/
 
     public String cursorColor(){
-	String ret = ANSI + "38;5;" + colorNumber( 5 - sliderR, 5 - sliderG, 5 - sliderB) + "m";
-	
-	return ret;
+	String ret = ANSI + "38;5;";
+	if(sliderR+sliderG+sliderB >=8) { //closer to white than black
+	    ret += 16;
+	}
+	else { //closer to black
+	    ret += 231;
+	}
+	return ret + "m";
     }
 
 
@@ -183,7 +190,7 @@ public class jPaint{
 	    for(int i = 0; i < printEasel.length; i++) {//adds printEasel to ret
 		for(int j = 0; j < printEasel[0].length; j++) {
 		    if(j == cursorX && i == cursorY) {
-			ret += color + cursorColor() + (cursorDown ? "><" : "||") + RESET;//cursor center
+			ret += BOLD + color + cursorColor() + (cursorDown ? "><" : "||") + RESET;//cursor center
 		    }
 		    else {
 			ret += printEasel[i][j] + "  ";
