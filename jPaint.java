@@ -460,23 +460,22 @@ public class jPaint{
      ****************************************************************/
 
     public static jPaint load(String fileName) { //takes info from file "saves/file" and loads it into a new jPaint
+	Scanner input;
 	try {
-	    Scanner input = new Scanner(new File("saves/" + fileName)); //makes a new scanner reading from the file
-	    //Scanner uses words. First word in file is number of rows, second is number of columns, third
-	    //is the long string representing file data
-	    int height = Integer.parseInt(input.next());
-	    int width = Integer.parseInt(input.next());
-	    String data = input.next();
-	    input.close(); //we are done with file now
-	    jPaint jp = new jPaint(height, width);
-	    jp.loadData(data);
-	    return jp;
+	    input = new Scanner(new File("saves/" + fileName)); //makes a new scanner reading from the file
 	}
 	catch(Exception e) {
-	    System.out.println(e);
-	    System.exit(1);
+	    return null;
 	}
-	return null;
+	//Scanner uses words. First word in file is number of rows, second is number of columns, third
+	//is the long string representing file data
+	int height = Integer.parseInt(input.next());
+	int width = Integer.parseInt(input.next());
+	String data = input.next();
+	input.close(); //we are done with file now
+	jPaint jp = new jPaint(height, width);
+	jp.loadData(data);
+	return jp;
     }	
 
     /******************************************
@@ -678,15 +677,6 @@ public class jPaint{
 		    else if (keyCode == 13) { //enter
 			break; //we have correct width and height
 		    }
-		    else if (key == 'l') { //loading time
-			loadMode = true;
-			System.out.print(CLEAR + RESET + "\033[0;0H");
-			System.out.print("Enter file name: " + name);
-			key = (char)0;//clears the 'l' so the starting filename isnt blank
-		    }
-		    else {
-			continue;
-		    }
 		    if(height > 32) height = 32;
 		    if(width > 32) width = 32;
 		    if(height < 1) height = 1;
@@ -702,10 +692,16 @@ public class jPaint{
 			System.out.println();
 			System.out.print(del(width*2)); //deletes all that space
 		    }
-		    System.out.println(RESET + "WASD -  change the size of your easel\r");
-		    System.out.println("L    -  load a file");
+
+		    if (key == 'l') { //loading time, below printing so it can print different stuff instead
+			loadMode = true;
+			System.out.print(CLEAR + RESET + "\033[0;0H");
+			System.out.print("Enter file name: " + name);
+			
+		    }
+
 		}
-		if(loadMode) { //instead of else, another if so that pressing L will update screen
+		else {
 		    
 		    int i = keyCode;
 		    //routine from save mode
@@ -716,9 +712,17 @@ public class jPaint{
 		    else if(i == 13) {
 			if(name.length() > 0) {
 			    inst = load(name);
+			    if(inst == null) {
+				name = "";
+				System.out.println("\r\nFile does not exist.\r");
+				continue;
+			    }
 			    break;
 			}
-			else continue;
+			else {
+			    loadMode = false;
+			    continue;
+			}
 		    }
 		    else {
 			name += key;
